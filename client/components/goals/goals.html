@@ -1,0 +1,48 @@
+<div class="container">
+    
+        <h1>Credits</h1>
+    
+        <div class="card">
+            <div class="card-content">
+    
+                <form ng-submit="$ctrl.addCredit()">
+                    <div>Amount (USD)<input type="number" ng-model="$ctrl.newCreditAmount" required></div>
+                    <div>Note: <input type="text" ng-model="$ctrl.newCreditNote" required></div>
+                    <div><input class="btn" type="submit" value="Add to Credits"></div>
+                </form>
+    
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="card-content">
+                <h3>Total Credits</h3>
+                <!-- <h3><i>{{ $ctrl.totalCredits() | currency }}</i></h3> -->
+            </div>
+        </div>
+    
+        <div class="card">
+            <div class="card-content">
+    
+                <table>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Note</th>
+                        <th>Date Entered</th>
+                        <th></th>
+                    </tr>
+                    <tr class="row" ng-repeat="creditEntry in $ctrl.creditEntries">
+                        <!-- <td>{{ creditEntry.amount | currency }}</td>
+                        <td>{{ creditEntry.note }}</td>
+                        <td>{{ creditEntry.createdAt | date : 'medium' }}</td> -->
+                        <td><button class="btn" ng-click="$ctrl.showCredit(creditEntry._id)">View</button></td>
+                        <!-- when the delete button is clicked, tell Angular what index in the array to delete -->
+                        <!-- and also what the id of the credit is so we can delete it from the database -->
+                        <td><button class="btn" ng-click="$ctrl.deleteCredit($index, creditEntry._id)">Delete</button></td>
+                    </tr>
+                </table>
+    
+            </div>
+        </div>
+    
+    </div>
