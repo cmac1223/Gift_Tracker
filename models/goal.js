@@ -2,4 +2,4 @@ var Schema = require('../db/schema');
 var mongoose = require('mongoose');
 
 var Goal = Schema.Goal;
-module.exports = Goals;
+module.exports = Goal;

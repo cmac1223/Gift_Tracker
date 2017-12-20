@@ -30,7 +30,7 @@ var users = require('./routes/users');
 app.use('/users', users);
 
 var goals = require('./routes/goals');
-app.use('/goals', goals);
+// app.use('/goals', goals);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
