@@ -1,3 +1,7 @@
+// angular 
+//   .module('myResolutionApp')
+//   .controller('GoalsController', GoalsController);
+  
 GoalsController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$scope'];
 
 function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
@@ -31,3 +35,5 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   }
 
 }
+
+module.exports = GoalsController;

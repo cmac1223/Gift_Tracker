@@ -6,7 +6,7 @@ function GoalsService($http) {
   self.getAllGoalsFromDatabase = function () {
     return $http.get('goals/');
   }
-}
+};
 
 angular
   .module('myResolutionApp')
