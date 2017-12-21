@@ -6,7 +6,7 @@ GoalsController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$
 
 function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   let vm = this;
-
+ 
   /*
   We will run this function the first time we load our component.
   We can use an 'initialize' function to pre-load some data from the DB
