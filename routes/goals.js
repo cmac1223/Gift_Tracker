@@ -18,4 +18,19 @@ router.get('/', (request, response) => {
   })
 })
 
+// show route
+router.get('/:goalId', function (request, response) {
+
+  const goalIdToShow = request.params.goalId;
+
+  Goal.findById(goalIdToShow, function (error, foundGoal) {
+    if (error) {
+      console.log('Error finding Goal with ID of ' + goalIdToShow);
+      return;
+    }
+    response.send(foundGoal);
+  });
+
+});
+
 module.exports = router;
