@@ -168,6 +168,10 @@ function uiRouterSetup($stateProvider, $urlRouterProvider) {
   $stateProvider.state('goals', {
     url: '/goals',
     template: '<goals></goals>'
+  }).state('show_goal/:goalId', {
+    url: '/show_goal/:goalId',
+    params: ['goalId'],
+    template: '<show-goal></show-goal>'
   });
   $urlRouterProvider.otherwise('/');
 }
