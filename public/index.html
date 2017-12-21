@@ -1,0 +1,20 @@
+<html lang="en" ng-app="myResolutionApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>New Year Resolution App</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+</head>
+<body> 
+  {{2 + 2}}
+  <nav class="center-align">
+    <a class="btn" ui-sref="goals">GOALS</a>
+  </nav>
+  
+  <ui-view></ui-view>  
+  
+  <script src="js/app.bundle.js"></script>
+</body>
+</html>
