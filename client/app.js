@@ -1,4 +1,4 @@
-require('angular-ui-router');
+require('@uirouter/angularjs');
 require('angular-messages');
 const angular = require('angular');
 
