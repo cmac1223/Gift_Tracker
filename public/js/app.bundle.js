@@ -35200,7 +35200,7 @@ angular.module('myResolutionApp').component('goals', GoalsComponent);
 /* 94 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <form ng-submit=\"$ctrl.addGoal()\">\n                  <div>Goal: <input type=\"text\" ng-model=\"$ctrl.newGoalGoal\" required></div>\n                    <div>Cost: (USD)<input type=\"number\" ng-model=\"$ctrl.newGoalCost    \" required></div>\n                    <div><input class=\"btn\" type=\"submit\" value=\"Add to Goals\"></div>\n                </form>\n    \n            </div>\n        </div>\n</div>";
+module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <form ng-submit=\"$ctrl.addGoal()\">\n                  <div>Goal: <input type=\"text\" ng-model=\"$ctrl.newGoalGoal\" required></div>\n                    <div>Cost: (USD)<input type=\"number\" ng-model=\"$ctrl.newGoalCost    \" required></div>\n                    <div><input class=\"btn\" type=\"submit\" value=\"Add to Goals\"></div>\n                </form>\n    \n            </div>\n        </div>\n\n        <div class=\"card\">\n          <div class=\"card-content\">\n            <h3>Total Goals</h3>\n            <h3><i>{{ $ctrl.totalGoals() | currency}}</i></h3>\n          </div>\n        </div>\n</div>";
 
 /***/ }),
 /* 95 */
