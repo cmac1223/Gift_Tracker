@@ -5,7 +5,7 @@ var Goal = require('../models/goal');
 
 router.get('/', (request, response) => {
   // Find all of the Goals from the database
-  Goals.find({}).exec(function(error, goals) {
+  Goal.find({}).exec(function(error, goals) {
     if (error) {
       console.log('Error retrieving goals!');
       console.log('Error: ' + error);
