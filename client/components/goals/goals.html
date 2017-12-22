@@ -1,1 +1,15 @@
-<h1>Credits</h1> 
+<div class="container">
+    
+        <h1>Credits</h1>
+    
+        <div class="card">
+            <div class="card-content">
+    
+                <form ng-submit="$ctrl.addGoal()">
+                  <div>Goal: <input type="text" ng-model="$ctrl.newGoalGoal" required></div>
+                    <div>Cost: (USD)<input type="number" ng-model="$ctrl.newGoalCost" required></div>
+                    <div><input class="btn" type="submit" value="Add to Credits"></div>
+                </form>
+    
+            </div>
+        </div>
