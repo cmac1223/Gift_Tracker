@@ -136,6 +136,29 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
       console.log('Error retrieving Goal Entries from database!');
     });
   }
+  // This function handles our form submission.
+  vm.addGoal = function () {
+
+    // the new Goal object will be created by binding to the form inputs
+    var newGoal = {
+      goal: vm.newGoalAmount,
+      cost: vm.newGoalNote
+    };
+
+    // Make an ajax call to save the new Goal to the databse:
+    GoalsService.addNewGoalToDatabase(newGoal).then(function success(response) {
+      // only push to the goalEntries array if the ajax call is successful
+      var newGoalFromDatabase = response.data;
+      vm.goalEntries.push(newGoalFromDatabase);
+      // then reset the form so we can submit more goals
+      resetForm();
+    }, function failure(response) {
+      // if the http call is not successful, log the error
+      //DO NOT clear the form
+      // DO NOT push the new object to the array
+      console.log('Error saving new Goal to database!');
+    });
+  };
 }
 
 module.exports = GoalsController;
@@ -35197,6 +35220,10 @@ function GoalsService($http) {
 
   self.getSingleGoalById = function (goalIdToShow) {
     return $http.get('goals/' + goalIdToShow);
+  };
+
+  self.addNewGoalToDatabase = function (newGoal) {
+    return $http.post('goals/', newGoal);
   };
 };
 

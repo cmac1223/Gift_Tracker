@@ -11,6 +11,10 @@ function GoalsService($http) {
     return $http.get('goals/' + goalIdToShow);
   }
 
+  self.addNewGoalToDatabase = function (newGoal) {
+    return $http.post('goals/', newGoal);
+  }
+
 };
 
 angular
