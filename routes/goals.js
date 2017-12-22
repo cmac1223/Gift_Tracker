@@ -33,4 +33,29 @@ router.get('/:goalId', function (request, response) {
 
 });
 
+// create route
+router.post('/', (request, response) => {
+
+  // grab the new Goal info from the request
+  let goalFromRequest = request.body;
+
+  // then build a new Goal model with the info
+  // REMEMBER: the new Date will be created by the DB
+  let newGoal = new Goal({
+    goal: goalFromRequest.goal,
+    cost: goalFromRequest.cost
+  });
+
+  // save the new Goal model to the DB
+  newGoal.save(function (error, newGoal) {
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    // once the new Goal has been saved, return it to the client
+    response.send(newGoal);
+  });
+});
+
 module.exports = router;
