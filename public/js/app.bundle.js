@@ -8222,8 +8222,8 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
     // Make an ajax call to save the new Goal to the databse:
     GoalsService.addNewGoalToDatabase(newGoal).then(function success(response) {
       // only push to the goalEntries array if the ajax call is successful
-      var newGoalFromDatabase = response.data;
-      vm.goalEntries.push(newGoalFromDatabase);
+      var newGoal = response.data;
+      vm.goalEntries.push(newGoal);
       // then reset the form so we can submit more goals
       resetForm();
     }, function failure(response) {

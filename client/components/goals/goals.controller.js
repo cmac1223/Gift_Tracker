@@ -45,8 +45,8 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
       .then(
         function success(response) {
           // only push to the goalEntries array if the ajax call is successful
-          const newGoalFromDatabase = response.data;
-          vm.goalEntries.push(newGoalFromDatabase);
+          const newGoal = response.data;
+          vm.goalEntries.push(newGoal);
           // then reset the form so we can submit more goals
           resetForm();
         },
