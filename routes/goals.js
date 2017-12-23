@@ -15,8 +15,8 @@ router.get('/', (request, response) => {
     // if there are no errors, send the goals back as JSON
     console.log(goals);
     response.send(goals);
-  })
-})
+  });
+});
 
 // show route
 router.get('/:goalId', function (request, response) {
