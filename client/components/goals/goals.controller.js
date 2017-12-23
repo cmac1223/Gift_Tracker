@@ -18,7 +18,9 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   // via an AJAX call
   console.log('>+++++<>')
   function getAllGoalsFromDatabase() {
+    console.log('inside getAllGoalFromDB');
     GoalsService.getAllGoalsFromDatabase()
+    console.log('>>+++++++<>')
       .then(
       function success(response) {
         // if the call is successful, return the list of goals
