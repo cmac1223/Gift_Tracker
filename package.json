@@ -21,12 +21,13 @@
     "debug": "~2.6.3",
     "dotenv": "^4.0.0",
     "express": "~4.15.2",
-    "foreman": "^2.0.0",
     "glob": "^7.1.2",
     "hbs": "~4.0.1",
     "html-loader": "^0.5.1",
     "mongoose": "^4.13.7",
     "morgan": "~1.8.1",
+    "nodemon": "^1.14.3",
+    "path": "^0.12.7",
     "serve-favicon": "~2.4.2",
     "webpack": "^3.10.0"
   }
