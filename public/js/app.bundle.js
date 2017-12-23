@@ -8205,6 +8205,7 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
     GoalsService.getAllGoalsFromDatabase().then(function success(response) {
       // if the call is successful, return the list of goals
       vm.goalEntries = response.data;
+      console.log(response.data);
     }, function failure(response) {
       console.log('Error retrieving Goal Entries from database!');
     });

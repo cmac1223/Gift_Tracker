@@ -23,6 +23,7 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
       function success(response) {
         // if the call is successful, return the list of goals
         vm.goalEntries = response.data;
+        console.log(response.data)
       },
 
       function failure(response) {
