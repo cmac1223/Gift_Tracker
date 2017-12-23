@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 
 var GoalSchema = new Schema({
-  goal: { type: String, required: true },
+  entry: { type: String, required: true },
   cost: { type: Number, required: true },
   createAt: Date,
   updatedAt: Date

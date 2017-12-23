@@ -6,8 +6,8 @@
             <div class="card-content">
     
                 <form ng-submit="$ctrl.addGoal()">
-                  <div>Goal: <input type="text" ng-model="$ctrl.newGoalAmount" required></div>
-                    <div>Cost: (USD)<input type="number" ng-model="$ctrl.newGoalNote" required></div>
+                  <div>Entry: <input type="text" ng-model="$ctrl.newGoalEntry" required></div>
+                    <div>Cost: (USD)<input type="number" ng-model="$ctrl.newGoalCost" required></div>
                     <div><input class="btn" type="submit" value="Add to Goals"></div>
                 </form>
     
@@ -32,7 +32,7 @@
                         <th></th>
                     </tr>
                     <tr class="row" ng-repeat="goalEntry in $ctrl.goalEntries">
-                        <td>{{ goalEntry.goal }}</td>
+                        <td>{{ goalEntry.entry }}</td>
                         <td>{{ goalEntry.cost | currency }}</td>
                         <td>{{ goalEntry.createdAt | date : 'medium'  }}</td>
                         <td><button class="btn" ng-click="$ctrl.showCredit(creditEntry._id)">View</button></td>

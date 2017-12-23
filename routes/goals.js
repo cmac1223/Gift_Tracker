@@ -42,7 +42,7 @@ router.post('/', (request, response) => {
   // then build a new Goal model with the info
   // REMEMBER: the new Date will be created by the DB
   let newGoal = new Goal({
-    goal: goalFromRequest.goal,
+    entry: goalFromRequest.entry,
     cost: goalFromRequest.cost
   });
 

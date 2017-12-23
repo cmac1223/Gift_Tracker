@@ -8182,10 +8182,6 @@ exports.BrowserLocationConfig = BrowserLocationConfig;
 "use strict";
 
 
-// angular 
-//   .module('myResolutionApp')
-//   .controller('GoalsController', GoalsController);
-
 GoalsController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$scope'];
 
 function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
@@ -8204,6 +8200,7 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
 
   // this function grabs all of the goals from the database
   // via an AJAX call
+  console.log('>+++++<>');
   function getAllGoalsFromDatabase() {
     GoalsService.getAllGoalsFromDatabase().then(function success(response) {
       // if the call is successful, return the list of goals
@@ -8217,8 +8214,8 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
 
     // the new Goal object will be created by binding to the form inputs
     var newGoal = {
-      goal: vm.newGoalAmount,
-      cost: vm.newGoalNote
+      entry: vm.newGoalEntry,
+      cost: vm.newGoalCost
     };
 
     // Make an ajax call to save the new Goal to the databse:
@@ -8238,8 +8235,8 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
 
   // this function can be used to clear the goals form
   function resetForm() {
-    vm.newGoalAmount = '';
-    vm.newGoalNote = '';
+    vm.newGoalEntry = '';
+    vm.newGoalCost = '';
   }
 }
 
@@ -45926,7 +45923,7 @@ angular.module('myResolutionApp').component('goals', GoalsComponent);
 /* 82 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <form ng-submit=\"$ctrl.addGoal()\">\n                  <div>Goal: <input type=\"text\" ng-model=\"$ctrl.newGoalAmount\" required></div>\n                    <div>Cost: (USD)<input type=\"number\" ng-model=\"$ctrl.newGoalNote\" required></div>\n                    <div><input class=\"btn\" type=\"submit\" value=\"Add to Goals\"></div>\n                </form>\n    \n            </div>\n        </div>\n\n        <div class=\"card\">\n          <div class=\"card-content\">\n            <h3>Total Goals</h3>\n            <h3><i>{{ $ctrl.totalGoals() | currency}}</i></h3>\n          </div>\n        </div>\n\n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <table>\n                    <tr>\n                        <th>Goals</th>\n                        <th>Cost</th>\n                        <th>Date Entered</th>\n                        <th></th>\n                    </tr>\n                    <tr class=\"row\" ng-repeat=\"goalEntry in $ctrl.goalEntries\">\n                        <td>{{ goalEntry.goal }}</td>\n                        <td>{{ goalEntry.cost | currency }}</td>\n                        <td>{{ goalEntry.createdAt | date : 'medium'  }}</td>\n                        <td><button class=\"btn\" ng-click=\"$ctrl.showCredit(creditEntry._id)\">View</button></td>\n                        <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n                        <!-- and also what the id of the credit is so we can delete it from the database -->\n                        <td><button class=\"btn\" ng-click=\"$ctrl.deleteCredit($index, creditEntry._id)\">Delete</button></td>\n                    </tr>\n                </table>\n    \n            </div>\n        </div>\n</div>";
+module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <form ng-submit=\"$ctrl.addGoal()\">\n                  <div>Entry: <input type=\"text\" ng-model=\"$ctrl.newGoalEntry\" required></div>\n                    <div>Cost: (USD)<input type=\"number\" ng-model=\"$ctrl.newGoalCost\" required></div>\n                    <div><input class=\"btn\" type=\"submit\" value=\"Add to Goals\"></div>\n                </form>\n    \n            </div>\n        </div>\n\n        <div class=\"card\">\n          <div class=\"card-content\">\n            <h3>Total Goals</h3>\n            <h3><i>{{ $ctrl.totalGoals() | currency}}</i></h3>\n          </div>\n        </div>\n\n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <table>\n                    <tr>\n                        <th>Goals</th>\n                        <th>Cost</th>\n                        <th>Date Entered</th>\n                        <th></th>\n                    </tr>\n                    <tr class=\"row\" ng-repeat=\"goalEntry in $ctrl.goalEntries\">\n                        <td>{{ goalEntry.entry }}</td>\n                        <td>{{ goalEntry.cost | currency }}</td>\n                        <td>{{ goalEntry.createdAt | date : 'medium'  }}</td>\n                        <td><button class=\"btn\" ng-click=\"$ctrl.showCredit(creditEntry._id)\">View</button></td>\n                        <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n                        <!-- and also what the id of the credit is so we can delete it from the database -->\n                        <td><button class=\"btn\" ng-click=\"$ctrl.deleteCredit($index, creditEntry._id)\">Delete</button></td>\n                    </tr>\n                </table>\n    \n            </div>\n        </div>\n</div>";
 
 /***/ }),
 /* 83 */

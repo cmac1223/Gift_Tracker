@@ -1,7 +1,3 @@
-// angular 
-//   .module('myResolutionApp')
-//   .controller('GoalsController', GoalsController);
-
 GoalsController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$scope'];
 
 function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
@@ -20,6 +16,7 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
 
   // this function grabs all of the goals from the database
   // via an AJAX call
+  console.log('>+++++<>')
   function getAllGoalsFromDatabase() {
     GoalsService.getAllGoalsFromDatabase()
       .then(
@@ -38,8 +35,8 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
 
     // the new Goal object will be created by binding to the form inputs
     const newGoal = {
-      goal: vm.newGoalAmount,
-      cost: vm.newGoalNote
+      entry: vm.newGoalEntry,
+      cost: vm.newGoalCost
     };
 
     // Make an ajax call to save the new Goal to the databse:
@@ -63,8 +60,8 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
 
   // this function can be used to clear the goals form
   function resetForm() {
-    vm.newGoalAmount = '';
-    vm.newGoalNote = '';
+    vm.newGoalEntry = '';
+    vm.newGoalCost = '';
   }
 
 }
