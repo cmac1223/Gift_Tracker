@@ -31,10 +31,10 @@
                         <th>Date Entered</th>
                         <th></th>
                     </tr>
-                    <tr class="row" ng-repeat="creditEntry in $ctrl.creditEntries">
-                        <td>{{ goalEntry.goal | currency }}</td>
-                        <td>{{ goalEntry.cost }}</td>
-                        <td>{{ goalEntry.createdAt | date : 'medium' }}</td>
+                    <tr class="row" ng-repeat="goalEntry in $ctrl.goalEntries">
+                        <td>{{ goalEntry.goal }}</td>
+                        <td>{{ goalEntry.cost | currency }}</td>
+                        <td>{{ goalEntry.createdAt | date : 'medium'  }}</td>
                         <td><button class="btn" ng-click="$ctrl.showCredit(creditEntry._id)">View</button></td>
                         <!-- when the delete button is clicked, tell Angular what index in the array to delete -->
                         <!-- and also what the id of the credit is so we can delete it from the database -->

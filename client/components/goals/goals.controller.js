@@ -61,6 +61,12 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
       )
   }
 
+  // this function can be used to clear the goals form
+  function resetForm() {
+    vm.newGoalAmount = '';
+    vm.newGoalNote = '';
+  }
+
 }
 
 module.exports = GoalsController;
