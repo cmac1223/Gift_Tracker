@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nf start",
+    "start": "node ./bin/www",
     "start:dev": "nodemon ./bin/www",
     "heroku-postbuild": "node_modules/.bin/webpack --progress",
     "build:dev": "webpack --watch"
