@@ -58,4 +58,20 @@ router.post('/', (request, response) => {
   });
 });
 
+// delete route
+router.delete('/:goalid', function (request, response){
+
+  const goalIdToDelete = request.params.goalId;
+
+  Goal.findByIdAndRemove(goalIdToDelete).exec(function (error) {
+    if (error) {
+      console.log("Error while deleting Goal with ID of " + goalIdToDelete);
+      return;
+    }
+
+    // once the goal has been deleted, tell the server everything was successful
+    response.sendStatus(200);
+  })
+});
+
 module.exports = router;

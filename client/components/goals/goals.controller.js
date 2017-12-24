@@ -59,6 +59,27 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
       )
   }
 
+  vm.deleteGoal = function (goalIndexToDelete, goalIdToDeleteFromDatabase) {
+
+    GoalsService.deleteIdFromDatabase(goalIdToDeleteFromDatabase)
+      .then(
+        function success(response) {
+          // only delete the Goal from the Angular array if 
+          // it was successfully deleted from the database
+          vm.goalEntries.splice(goalIndexToDelete, 1);
+        },
+        function failure(response) {
+          // DO NOT delete the Goal from the Angular array if the
+          // goal is not successfully deleted from the database
+          console.log('Error deleting Goal with ID of ' + goalIdToDeleteFromDatabase);
+        }
+      )
+  }
+
+  vm.showGoal = function (goalId) {
+    $state.go('show_goal/:goalId', {goalId: goalId});
+  }
+
   // this function can be used to clear the goals form
   function resetForm() {
     vm.newGoalEntry = '';

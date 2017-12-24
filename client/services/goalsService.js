@@ -15,6 +15,10 @@ function GoalsService($http) {
     return $http.post('goals/', newGoal);
   }
 
+  self.deleteIdFromDatabase = function (goalIdToDeleteFromDatabase) {
+    return $http.delete('goals/', + goalIdToDeleteFromDatabase)
+  }
+
 };
 
 angular
