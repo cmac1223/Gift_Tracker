@@ -59,7 +59,7 @@ router.post('/', (request, response) => {
 });
 
 // delete route
-router.delete('/:goalid', function (request, response){
+router.delete('/:goalId', function (request, response){
 
   const goalIdToDelete = request.params.goalId;
 

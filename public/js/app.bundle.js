@@ -8267,7 +8267,8 @@ module.exports = GoalsController;
 __webpack_require__(54);
 __webpack_require__(81);
 __webpack_require__(52);
-module.exports = __webpack_require__(83);
+__webpack_require__(83);
+module.exports = __webpack_require__(84);
 
 
 /***/ }),
@@ -45945,6 +45946,13 @@ module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \
 
 /***/ }),
 /* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/***/ }),
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
