@@ -45976,7 +45976,7 @@ function GoalsService($http) {
   };
 
   self.deleteIdFromDatabase = function (goalIdToDeleteFromDatabase) {
-    return $http.delete('goals/', +goalIdToDeleteFromDatabase);
+    return $http.delete('goals/' + goalIdToDeleteFromDatabase);
   };
 };
 
