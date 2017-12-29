@@ -7,5 +7,5 @@ const ShowGoalComponent = {
 }
 
 angular
-  .module('myResolutionsApp')
+  .module('myResolutionApp')
   .component('showGoal', ShowGoalComponent);
