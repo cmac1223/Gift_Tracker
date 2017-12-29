@@ -45951,6 +45951,30 @@ module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \
 "use strict";
 
 
+ShowGoalController.$inject = ['$state', '$stateParams', 'GoalsService'];
+
+function ShowGoalController($state, $stateParams, GoalsService) {
+
+  var vm = this;
+
+  function initialize() {
+    var goalIdToShow = $stateParams.goalId;
+
+    GoalsService.getSingleGoalById(goalIdToShow).then(function success(response) {
+      vm.goalEntry = response.data;
+    }, function failure(response) {
+      console.log('Failed to retrieve information for Credit with ID of ' + goalIdToShow);
+    });
+  }
+  initialize();
+
+  vm.editGoalEntry = function (goalEntryId) {
+    $state.go('edit_goal/:goalId', { goalId: goalEntryId });
+  };
+}
+
+module.exports = ShowGoalController;
+
 /***/ }),
 /* 84 */
 /***/ (function(module, exports, __webpack_require__) {
