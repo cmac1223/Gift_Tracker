@@ -58,6 +58,25 @@ router.post('/', (request, response) => {
   });
 });
 
+// update route
+router.patch('/', function (request, response) {
+
+  let goalToUpdate = request.body;
+
+  console.log(goalToUpdate);
+
+  Goal.findByIdAndUpdate(goalToUpdate._id, goalToUpdate, { new: true})
+    .exec(function (error, updatedGoal) {
+
+      if (error) {
+        console.log("Error while updating Goal with ID of " + goalToUpdate.id);
+        return;
+      }
+
+      response.send(200);
+    });
+});
+
 // delete route
 router.delete('/:goalId', function (request, response){
 

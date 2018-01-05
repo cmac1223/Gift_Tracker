@@ -1,0 +1,10 @@
+<div class="container">
+  <div class="card">
+    <div class="card-content">
+      <form ng-submit="$ctrl.updateGoalInformation($ctrl.goalToUpdate._id)">
+        <div>Goal: <input type="text" ng-model="$ctrl.goalToUpdate.goal"></div>
+        <div>Cost: <input type="number" ng-model="$ctrl.goalToUpdate.cost"></div>
+      </form>
+    </div>
+  </div>
+</div>

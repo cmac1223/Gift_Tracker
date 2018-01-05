@@ -19,6 +19,10 @@ function GoalsService($http) {
     return $http.delete('goals/' + goalIdToDeleteFromDatabase);
   }
 
+  self.updateSingleGoal = function (goalToUpdate) {
+    return $http.patch('goals/', goalToUpdate);
+  }
+
 };
 
 angular
