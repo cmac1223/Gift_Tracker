@@ -46045,7 +46045,7 @@ angular.module('myResolutionApp').component('showGoal', ShowGoalComponent);
 /* 87 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <h1>Show Goal</h1>\n  <div class=\"card\">\n    <div class=\"card-content\">\n      <h3>Entry: {{$ctrl.goalEntry.entry}}</h3>\n      <h3>Cost: {{$ctrl.goalEntry.cost}}</h3>\n      <h3>Created On: {{$ctrl.goalEntry.createAt}}</h3>\n    </div>\n  </div>\n\n</div>";
+module.exports = "<div class=\"container\">\n  <h1>Show Goal</h1>\n  <div class=\"card\">\n    <div class=\"card-content\">\n      <h3>Entry: {{$ctrl.goalEntry.entry}}</h3>\n      <h3>Cost: {{$ctrl.goalEntry.cost}}</h3>\n      <h3>Created On: {{$ctrl.goalEntry.createAt}}</h3>\n      <button class=\"btn\" ng-click=\"$ctrl.editGoalEntry($ctrl.goalEntry._id)\">Edit</button>\n    </div>\n  </div>\n\n</div>";
 
 /***/ }),
 /* 88 */
