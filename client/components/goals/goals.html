@@ -7,7 +7,7 @@
     
                 <form ng-submit="$ctrl.addGoal()">
                   <div>Entry: <input type="text" ng-model="$ctrl.newGoalEntry" required></div>
-                    <div>Cost: (USD)<input type="number" ng-model="$ctrl.newGoalCost" required></div>
+                    <div>Cost: (USD)<input type="number" step=".01" ng-model="$ctrl.newGoalCost" required></div>
                     <div><input class="btn" type="submit" value="Add to Goals"></div>
                 </form>
     
