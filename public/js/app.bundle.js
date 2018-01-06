@@ -8334,11 +8334,11 @@ module.exports = ShowGoalController;
 __webpack_require__(56);
 __webpack_require__(83);
 __webpack_require__(52);
-__webpack_require__(84);
+__webpack_require__(85);
 __webpack_require__(53);
-__webpack_require__(86);
+__webpack_require__(87);
 __webpack_require__(54);
-module.exports = __webpack_require__(88);
+module.exports = __webpack_require__(89);
 
 
 /***/ }),
@@ -46001,7 +46001,7 @@ function ngMessageDirectiveFactory() {
 "use strict";
 
 
-var editGoalTemplate = __webpack_require__(89);
+var editGoalTemplate = __webpack_require__(84);
 var editGoalController = __webpack_require__(52);
 
 var EditGoalComponent = {
@@ -46013,12 +46013,18 @@ angular.module('myResolutionApp').component('editGoal', EditGoalComponent);
 
 /***/ }),
 /* 84 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">\n  <div class=\"card\">\n    <div class=\"card-content\">\n      <form ng-submit=\"$ctrl.updateGoalInformation($ctrl.goalToUpdate._id)\">\n        <div>Entry: <input type=\"text\" ng-model=\"$ctrl.goalToUpdate.entry\"></div>\n        <div>Cost: <input type=\"number\" ng-model=\"$ctrl.goalToUpdate.cost\"></div>\n        <div>Created At: {{$ctrl.goalToUpdate.createAt}}</div>\n        <div><input class=\"btn\" type=\"submit\" value=\"Update Goal Entry\"></div>\n      </form>\n    </div>\n  </div>\n</div>";
+
+/***/ }),
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var goalsTemplate = __webpack_require__(85);
+var goalsTemplate = __webpack_require__(86);
 var goalsController = __webpack_require__(53);
 
 var GoalsComponent = {
@@ -46029,19 +46035,19 @@ var GoalsComponent = {
 angular.module('myResolutionApp').component('goals', GoalsComponent);
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <form ng-submit=\"$ctrl.addGoal()\">\n                  <div>Entry: <input type=\"text\" ng-model=\"$ctrl.newGoalEntry\" required></div>\n                    <div>Cost: (USD)<input type=\"number\" ng-model=\"$ctrl.newGoalCost\" required></div>\n                    <div><input class=\"btn\" type=\"submit\" value=\"Add to Goals\"></div>\n                </form>\n    \n            </div>\n        </div>\n\n        <div class=\"card\">\n          <div class=\"card-content\">\n            <h3>Total Goals</h3>\n            <h3><i>{{ $ctrl.totalGoals() | currency}}</i></h3>\n          </div>\n        </div>\n\n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <table>\n                    <tr>\n                        <th>Goals</th>\n                        <th>Cost</th>\n                        <th>Date Entered</th>\n                        <th></th>\n                    </tr>\n                    <tr class=\"row\" ng-repeat=\"goalEntry in $ctrl.goalEntries\">\n                        <td>{{ goalEntry.entry }}</td>\n                        <td>{{ goalEntry.cost | currency }}</td>\n                        <td>{{ goalEntry.createAt | date : 'medium'  }}</td>\n                        <td><button class=\"btn\" ng-click=\"$ctrl.showGoal(goalEntry._id)\">View</button></td>\n                        <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n                        <!-- and also what the id of the credit is so we can delete it from the database -->\n                        <td><button class=\"btn\" ng-click=\"$ctrl.deleteGoal($index, goalEntry._id)\">Delete</button></td>\n                    </tr>\n                </table>\n    \n            </div>\n        </div>\n</div>";
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var showGoalTemplate = __webpack_require__(87);
+var showGoalTemplate = __webpack_require__(88);
 var showGoalController = __webpack_require__(54);
 
 var ShowGoalComponent = {
@@ -46052,13 +46058,13 @@ var ShowGoalComponent = {
 angular.module('myResolutionApp').component('showGoal', ShowGoalComponent);
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"container\">\n  <h1>Show Goal</h1>\n  <div class=\"card\">\n    <div class=\"card-content\">\n      <h3>Entry: {{$ctrl.goalEntry.entry}}</h3>\n      <h3>Cost: {{$ctrl.goalEntry.cost}}</h3>\n      <h3>Created On: {{$ctrl.goalEntry.createAt}}</h3>\n      <button class=\"btn\" ng-click=\"$ctrl.editGoalEntry($ctrl.goalEntry._id)\">Edit</button>\n    </div>\n  </div>\n\n</div>";
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46091,12 +46097,6 @@ function GoalsService($http) {
 };
 
 angular.module('myResolutionApp').service('GoalsService', GoalsService);
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container\">\n  <div class=\"card\">\n    <div class=\"card-content\">\n      <form ng-submit=\"$ctrl.updateGoalInformation($ctrl.goalToUpdate._id)\">\n        <div>Goal: <input type=\"text\" ng-model=\"$ctrl.goalToUpdate.goal\"></div>\n        <div>Cost: <input type=\"number\" ng-model=\"$ctrl.goalToUpdate.cost\"></div>\n        <div><input class=\"btn\" type=\"submit\" value=\"Update Goal Entry\"></div>\n      </form>\n    </div>\n  </div>\n</div>";
 
 /***/ })
 /******/ ]);
