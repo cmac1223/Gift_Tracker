@@ -8366,6 +8366,9 @@ function uiRouterSetup($stateProvider, $urlRouterProvider) {
   }).state('edit_goal/:goalId', {
     url: '/edit_goal/:goalId',
     template: '<edit-goal></edit-goal>'
+  }).state('ShoppingLists', {
+    url: '/shoppingLists',
+    template: '<shoppingLists></shoppingLists>'
   });
   $urlRouterProvider.otherwise('/');
 }

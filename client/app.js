@@ -20,5 +20,9 @@ function uiRouterSetup($stateProvider, $urlRouterProvider) {
       url: '/edit_goal/:goalId',
       template: '<edit-goal></edit-goal>'
     })
+    .state('ShoppingLists', {
+      url: '/shoppingLists',
+      template: '<shoppingLists></shoppingLists>'
+    })
   $urlRouterProvider.otherwise('/');  
 }

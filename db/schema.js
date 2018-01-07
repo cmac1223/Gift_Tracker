@@ -11,6 +11,21 @@ var GoalSchema = new Schema({
   updatedAt: Date
 })
 
+var ShoppingListSchema = new Schema({
+  title: String,
+  list: [GoalSchema]
+});
+
+ShoppingListSchema.pre('save', function (next) {
+  now = new Date();
+  this.updatedAt = now;
+
+  if (!this.createdAt) {
+    this.createdAt = now;
+  }
+  next();
+})
+
 GoalSchema.pre('save', function(next){
   now = new Date();
   this.updatedAt = now;
