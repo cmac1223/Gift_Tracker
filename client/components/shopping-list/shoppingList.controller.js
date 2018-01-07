@@ -53,7 +53,7 @@ function ShoppingListController($http, $state, $stateParams, ShoppingListsServic
   };
   // renders the show shoppingList page on click
   vm.showShoppingList = function (shoppingListId){
-    $state.go('showShoppingList', { shoppingListId: shoppingListId});
+    $state.go('showShoppingLists', { shoppingListsId: shoppingListsId});
   }
 }
 
