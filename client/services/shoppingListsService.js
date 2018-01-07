@@ -12,4 +12,13 @@ function ShoppingListsService($http) {
   self.getSingleShoppingListById = function (shoppingListIdToShow) {
     return $http.get('shoppingLists/', shoppingListIdToShow)
   }
+  self.updateSingleShoppingList = function (shoppingListToUpdate) {
+    return $http.patch('shoppingLists/', shoppingListToUpdate)
+  }
+  self.deleteIdFromDatabase = function (shoppingListIdToDeleteFromDatabase) {
+    return $http.delete('shoppingLists/', shoppingListIdToDeleteFromDatabase)
+  }
 }
+angular
+  .module('myResolutionApp')
+  .service('ShoppingListsService', ShoppingListsService)
