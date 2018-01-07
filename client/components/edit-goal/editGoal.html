@@ -3,7 +3,7 @@
     <div class="card-content">
       <form ng-submit="$ctrl.updateGoalInformation($ctrl.goalToUpdate._id)">
         <div>Entry: <input type="text" ng-model="$ctrl.goalToUpdate.entry"></div>
-        <div>Cost: <input type="number" ng-model="$ctrl.goalToUpdate.cost"></div>
+        <div>Cost: <input type="number" step=".01" ng-model="$ctrl.goalToUpdate.cost"></div>
         <div>Created At: {{$ctrl.goalToUpdate.createAt}}</div>
         <div><input class="btn" type="submit" value="Update Goal Entry"></div>
       </form>

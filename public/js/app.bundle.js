@@ -46015,7 +46015,7 @@ angular.module('myResolutionApp').component('editGoal', EditGoalComponent);
 /* 84 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <div class=\"card\">\n    <div class=\"card-content\">\n      <form ng-submit=\"$ctrl.updateGoalInformation($ctrl.goalToUpdate._id)\">\n        <div>Entry: <input type=\"text\" ng-model=\"$ctrl.goalToUpdate.entry\"></div>\n        <div>Cost: <input type=\"number\" ng-model=\"$ctrl.goalToUpdate.cost\"></div>\n        <div>Created At: {{$ctrl.goalToUpdate.createAt}}</div>\n        <div><input class=\"btn\" type=\"submit\" value=\"Update Goal Entry\"></div>\n      </form>\n    </div>\n  </div>\n</div>";
+module.exports = "<div class=\"container\">\n  <div class=\"card\">\n    <div class=\"card-content\">\n      <form ng-submit=\"$ctrl.updateGoalInformation($ctrl.goalToUpdate._id)\">\n        <div>Entry: <input type=\"text\" ng-model=\"$ctrl.goalToUpdate.entry\"></div>\n        <div>Cost: <input type=\"number\" step=\".01\" ng-model=\"$ctrl.goalToUpdate.cost\"></div>\n        <div>Created At: {{$ctrl.goalToUpdate.createAt}}</div>\n        <div><input class=\"btn\" type=\"submit\" value=\"Update Goal Entry\"></div>\n      </form>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
 /* 85 */
