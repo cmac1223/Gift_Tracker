@@ -37,7 +37,9 @@ GoalSchema.pre('save', function(next){
 })
 
 var GoalModel = mongoose.model('Goal', GoalSchema);
+var ShoppingListModel = mongoose.model('ShoppingList', ShoppingListSchema);
 
 module.exports = {
-  Goal: GoalModel
+  Goal: GoalModel,
+  ShoppingList: ShoppingListModel
 };
