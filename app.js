@@ -52,6 +52,9 @@ app.use('/users', users);
 var goals = require('./routes/goals');
 app.use('/goals', goals);
 
+var shoppingLists = require('./routes/shoppingLists');
+app.use('/shoppingLists', shoppingLists);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
