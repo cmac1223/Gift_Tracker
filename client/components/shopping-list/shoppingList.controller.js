@@ -1,4 +1,4 @@
-ShoppingListController.$inject = ['$http', '$state', '$state', '$stateParams', 'ShoppingListsService.js', '$scope'];
+ShoppingListController.$inject = ['$http', '$state', '$state', '$stateParams', 'ShoppingListsService', '$scope'];
 
 function ShoppingListController($http, $state, $stateParams, ShoppingListsService, $scope) {
 
