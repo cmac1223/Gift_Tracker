@@ -1,6 +1,16 @@
-<h1>ShoppingList</h1>
-<h1>ShoppingList</h1>
-<h1>ShoppingList</h1>
-<h1>ShoppingList</h1>
-<h1>ShoppingList</h1>
-<h1>ShoppingList</h1>
+<div class="container">
+  <h1>Shopping Lists</h1>
+  <!-- Show Shopping Lists Toggle -->
+  <button ng-click="sLists = !sLists">Select A Name</button>
+  <!-- Dropdown Structure -->
+  <div id="show-sLists-card" ng-show="sLists">
+    <ul>
+      <li ng-repeat="sLists in $ctrl.shoppingListEntries">
+        <a ng-click="$ctrl.showShoppingList(sLists._id)">
+          <h5>{{sLists.title}}</h5>
+        </a>
+      </li>
+    </ul>
+
+  </div>
+</div>

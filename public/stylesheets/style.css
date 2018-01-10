@@ -6,3 +6,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+#show-sLists-card a {
+  color: rgba(0,0,0,.7)
+}
+
+#show-sLists-card a:hover {
+  color: rgba(150,255,200,.7)
+}

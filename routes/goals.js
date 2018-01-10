@@ -1,8 +1,9 @@
 var express = require('express');
-var router = express.Router();
-
+// you need to set mergeParams: true on the router,
+// if you want to access params from the parent router
+var router = express.Router({mergeParams: true})
 var Goal = require('../models/goal');
-
+var shoppingList = require('../models/shoppingList');
 router.get('/', (request, response) => {
   // Find all of the Goals from the database
   Goal.find({}).exec(function(error, goals) {
@@ -35,6 +36,10 @@ router.get('/:goalId', function (request, response) {
 
 // create route
 router.post('/', (request, response) => {
+
+  // grab the shoppingList ID we want to create a new list for
+  var shoppingListId = request.params.shoppingListId;
+  var goalId = request.params.goalId;
 
   // grab the new Goal info from the request
   let goalFromRequest = request.body;

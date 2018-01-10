@@ -46127,7 +46127,7 @@ angular.module('myResolutionApp').component('shoppingLists', ShoppingListsCompon
 /* 89 */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>ShoppingList</h1>\n<h1>ShoppingList</h1>\n<h1>ShoppingList</h1>\n<h1>ShoppingList</h1>\n<h1>ShoppingList</h1>\n<h1>ShoppingList</h1>";
+module.exports = "<div class=\"container\">\n  <h1>Shopping Lists</h1>\n  <!-- Show Shopping Lists Toggle -->\n  <button ng-click=\"sLists = !sLists\">Select A Name</button>\n  <!-- Dropdown Structure -->\n  <div id=\"show-sLists-card\" ng-show=\"sLists\">\n    <ul>\n      <li ng-repeat=\"sLists in $ctrl.shoppingListEntries\">\n        <a ng-click=\"$ctrl.showShoppingList(sLists._id)\">\n          <h5>{{sLists.title}}</h5>\n        </a>\n      </li>\n    </ul>\n\n  </div>\n</div>";
 
 /***/ }),
 /* 90 */
