@@ -1,5 +1,5 @@
-let shoppingListsTemplate = require(__dirname + '/shoppingList.html');
-let shoppingListsController = require(__dirname + '/shoppingList.controller.js');
+let shoppingListsTemplate = require(__dirname + '/shoppingLists.html');
+let shoppingListsController = require(__dirname + '/shoppingLists.controller.js');
 
 let ShoppingListsComponent = {
   template: shoppingListsTemplate,

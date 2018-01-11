@@ -1,6 +1,6 @@
-ShoppingListController.$inject = ['$http', '$state', '$state', '$stateParams', 'ShoppingListsService', '$scope'];
+ShoppingListsController.$inject = ['$http',  '$state', '$stateParams', 'ShoppingListsService', '$scope'];
 
-function ShoppingListController($http, $state, $stateParams, ShoppingListsService, $scope) {
+function ShoppingListsController($http, $state, $stateParams, ShoppingListsService, $scope) {
 
   let vm = this;
   // this is what runs as the page loads
@@ -57,4 +57,4 @@ function ShoppingListController($http, $state, $stateParams, ShoppingListsServic
   }
 }
 
-module.exports = ShoppingListController;
+module.exports = ShoppingListsController;
