@@ -27,7 +27,7 @@ function ShoppingListsController($http, $state, $stateParams, ShoppingListsServi
 
     // the new ShoppingList object will be created by binding to the form inputs
     const newShoppingList = {
-      title: vm.newShoppingList
+      title: vm.newShoppingListTitle
     };
     // add a new shoppingList
     ShoppingListsService.addNewShoppingList(newShoppingList)

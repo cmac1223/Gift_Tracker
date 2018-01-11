@@ -8328,7 +8328,7 @@ function ShoppingListsController($http, $state, $stateParams, ShoppingListsServi
 
     // the new ShoppingList object will be created by binding to the form inputs
     var newShoppingList = {
-      title: vm.newShoppingList
+      title: vm.newShoppingListTitle
     };
     // add a new shoppingList
     ShoppingListsService.addNewShoppingList(newShoppingList).then(function success(response) {
@@ -46127,7 +46127,7 @@ angular.module('myResolutionApp').component('shoppingLists', ShoppingListsCompon
 /* 89 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <h1>Shopping Lists</h1>\n  <!-- Show Shopping Lists Toggle -->\n  <button ng-click=\"sLists = !sLists\">Select A Name</button>\n  <!-- Dropdown Structure -->\n  <div id=\"show-sLists-card\" ng-show=\"sLists\">\n    <ul>\n      <li ng-repeat=\"sLists in $ctrl.shoppingListEntries\">\n        <a ng-click=\"$ctrl.showShoppingList(sLists._id)\">\n          <h5>{{sLists.title}}</h5>\n        </a>\n      </li>\n    </ul>\n\n  </div>\n</div>";
+module.exports = "<div class=\"container\">\n  <h1>Shopping Lists</h1>\n  <!-- Show Shopping Lists Toggle -->\n  <button ng-click=\"sLists = !sLists\">Select A Name</button>\n  <!-- Dropdown Structure -->\n  <div id=\"show-sLists-card\" ng-show=\"sLists\">\n    <ul>\n      <li ng-repeat=\"sLists in $ctrl.shoppingListEntries\">\n        <a ng-click=\"$ctrl.showShoppingList(sLists._id)\">\n          <h5>{{sLists.title}}</h5>\n        </a>\n      </li>\n    </ul>\n\n  </div>\n\n  <!-- New Shopping List -->\n  <button type=\"submit\" ng-click=\"visible = !visible\">Create New List</button>\n  <div ng-show=\"visible\">\n    <br>\n    <form name=\"newShoppingList\" ng-submit=\"$ctrl.addNewShoppingList()\">\n      <div>\n        <input  type=\"text\" class=\"validate\" ng-model=\"$ctrl.newShoppingListTitle\" required>\n        <label for=\"Title\">Title</label>\n      </div>  \n      <button type=\"submit\" ng-click=\"visible = !visible\" ng-show=\"true\" value=\"Add New Shopping List\"> Submit</button>\n    </form>\n\n  </div>\n</div>";
 
 /***/ }),
 /* 90 */

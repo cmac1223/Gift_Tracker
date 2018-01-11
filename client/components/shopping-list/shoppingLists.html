@@ -13,4 +13,18 @@
     </ul>
 
   </div>
+
+  <!-- New Shopping List -->
+  <button type="submit" ng-click="visible = !visible">Create New List</button>
+  <div ng-show="visible">
+    <br>
+    <form name="newShoppingList" ng-submit="$ctrl.addNewShoppingList()">
+      <div>
+        <input  type="text" class="validate" ng-model="$ctrl.newShoppingListTitle" required>
+        <label for="Title">Title</label>
+      </div>  
+      <button type="submit" ng-click="visible = !visible" ng-show="true" value="Add New Shopping List"> Submit</button>
+    </form>
+
+  </div>
 </div>
