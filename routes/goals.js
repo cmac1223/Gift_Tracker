@@ -3,7 +3,7 @@ var express = require('express');
 // if you want to access params from the parent router
 var router = express.Router({mergeParams: true})
 var Goal = require('../models/goal');
-var shoppingList = require('../models/shoppingList');
+var ShoppingList = require('../models/shoppingList');
 router.get('/', (request, response) => {
   // Find all of the Goals from the database
   Goal.find({}).exec(function(error, goals) {
@@ -37,31 +37,56 @@ router.get('/:goalId', function (request, response) {
 // create route
 router.post('/', (request, response) => {
 
-  // grab the shoppingList ID we want to create a new list for
+  // grab the shoppingList ID we want to create a new goal for
   var shoppingListId = request.params.shoppingListId;
   var goalId = request.params.goalId;
 
   // grab the new Goal info from the request
-  let goalFromRequest = request.body;
+  // let goalFromRequest = request.body;
 
-  // then build a new Goal model with the info
-  // REMEMBER: the new Date will be created by the DB
-  let newGoal = new Goal({
-    entry: goalFromRequest.entry,
-    cost: goalFromRequest.cost
-  });
+  // then grab the new Goal that we created using the form
+  var newGoalEntry = request.body.entry;
+  var newGoalCost = request.body.cost;
 
-  // save the new Goal model to the DB
-  newGoal.save(function (error, newGoal) {
-    if (error) {
-      console.log(error);
-      return;
-    }
+  // Find the shoppingList in the database we want to save the new Goal for
+  ShoppingList.findById(shoppingListId)
+    .exec(function (error, shoppingList){
 
-    // once the new Goal has been saved, return it to the client
-    response.send(newGoal);
-  });
-});
+      // then build a new Goal model with the info
+      // REMEMBER: the new Date will be created by the DB
+      let newGoal = new Goal({
+        entry: goalFromRequest.entry,
+        cost: goalFromRequest.cost
+      });
+
+      // add a new Goal to the ShoppingList, using the data
+      // we grabbed off of the form
+      shoppingList.goal.push(newGoal);
+
+      // once we have added the new Goal to the shoppingList's collection
+      // we can save the ShoppingList
+      shoppingList.save(function(error){
+        if (error){
+          console.log(error);
+          return;
+        }
+
+        response.send(newGoal);
+      })
+    });
+
+
+//   // save the new Goal model to the DB
+//   newGoal.save(function (error, newGoal) {
+//     if (error) {
+//       console.log(error);
+//       return;
+//     }
+
+//     // once the new Goal has been saved, return it to the client
+//     response.send(newGoal);
+//   });
+// });
 
 // update route
 router.patch('/', function (request, response) {
