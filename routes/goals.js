@@ -86,7 +86,7 @@ router.post('/', (request, response) => {
 //     // once the new Goal has been saved, return it to the client
 //     response.send(newGoal);
 //   });
-// });
+});
 
 // update route
 router.patch('/', function (request, response) {

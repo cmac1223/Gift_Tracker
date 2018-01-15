@@ -2,6 +2,8 @@ GoalsController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$
 
 function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   let vm = this;
+  let shoppingListIdForGoal = $stateParams.shoppingListId;
+  vm.shoppingListId = $stateParams.shoppingListId;
 
   /*
   We will run this function the first time we load our component.
@@ -9,7 +11,7 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   */
 
   function initialize() {
-    getAllGoalsFromDatabase();
+    getAllGoalByShoppingListId();
   }
 
   initialize();
@@ -17,8 +19,8 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   // this function grabs all of the goals from the database
   // via an AJAX call
   console.log('>+++++<>')
-  function getAllGoalsFromDatabase() {
-    GoalsService.getAllGoalsFromDatabase()
+  function getAllGoalByShoppingListId() {
+    GoalsService.getAllGoalByShoppingListId(shoppingListIdForGoal)
      .then(
       function success(response) {
         // if the call is successful, return the list of goals
@@ -32,7 +34,7 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
       );
     }
   // This function handles our form submission.
-  vm.addGoal = function (){
+  vm.addNewGoal = function (){
 
     // the new Goal object will be created by binding to the form inputs
     const newGoal = {
@@ -41,12 +43,12 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
     };
 
     // Make an ajax call to save the new Goal to the databse:
-    GoalsService.addNewGoalToDatabase(newGoal)
+    GoalsService.addNewGoal(shoppingListIdForGoal, newGoal)
       .then(
         function success(response) {
           // only push to the goalEntries array if the ajax call is successful
           const newGoal = response.data;
-          vm.goalEntries.push(newGoal);
+          // vm.goalEntries.push(newGoal);
           // then reset the form so we can submit more goals
           resetForm();
         },

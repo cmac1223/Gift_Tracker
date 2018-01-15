@@ -7,10 +7,10 @@ angular.module('myResolutionApp', ['ui.router', 'ngMessages']).config(uiRouterSe
 uiRouterSetup.$inject = ['$stateProvider', '$urlRouterProvider'];
 function uiRouterSetup($stateProvider, $urlRouterProvider) {
   $stateProvider
-    .state('goals', {
-      url: '/goals',
-      template: '<goals></goals>'
-    })
+    // .state('goals', {
+    //   url: '/goals',
+    //   template: '<goals></goals>'
+    // })
     .state('show_goal/:goalId', {
       url: '/show_goal/:goalId',
       params: [ 'goalId' ],
@@ -23,6 +23,16 @@ function uiRouterSetup($stateProvider, $urlRouterProvider) {
     .state('shoppingLists', {
       url: '/shoppingLists',
       template: '<shopping-lists></shopping-lists>'
+    })
+    .state('showShoppingList', {
+      url: '/shoppingLists/:shoppingListId',
+      params: ['showId'],
+      template: '<show-shoppingList></show-shoppinglist>'
+    })
+    .state('goalIndex', {
+      url:'/shoppingLists/:shoppingListId/goals',
+      params: ['shoppingListId'],
+      template: '<goals></goals>'
     })
   $urlRouterProvider.otherwise('/shoppingLists');  
 }
