@@ -8222,8 +8222,8 @@ GoalsController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$
 
 function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   var vm = this;
-  var shoppingListIdForGoal = $stateParams.shoppingListId;
-  vm.shoppingListId = $stateParams.shoppingListId;
+  var shoppingListIdForGoal = $stateParams.shoppingId;
+  vm.shoppingId = $stateParams.shoppingId;
 
   /*
   We will run this function the first time we load our component.
@@ -8285,8 +8285,11 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
     });
   };
 
-  vm.showGoal = function (goalId) {
-    $state.go('show_goal/:goalId', { goalId: goalId });
+  vm.openGoal = function (goalId) {
+    $state.go('showGoal', {
+      shoppingId: shoppingListIdForGoal,
+      goalId: goalId
+    });
   };
 
   // this function can be used to clear the goals form
@@ -8351,8 +8354,8 @@ function ShoppingListsController($http, $state, $stateParams, ShoppingListsServi
     resetForm();
   };
   // renders the show shoppingList page on click
-  vm.showShoppingList = function (shoppingListId) {
-    $state.go('showShoppingList', { shoppingListId: shoppingListId });
+  vm.showShoppingList = function (shoppingId) {
+    $state.go('showShopping', { shoppingId: shoppingId });
   };
 }
 
@@ -8396,15 +8399,15 @@ module.exports = ShowGoalController;
 "use strict";
 
 
-ShowShoppingListController.$inject = ['$state', '$stateParams', 'ShoppingListsService'];
+ShowShoppingController.$inject = ['$state', '$stateParams', 'ShoppingListsService'];
 
-function ShowShoppingListController($state, $stateParams, ShoppingListsService) {
+function ShowShoppingController($state, $stateParams, ShoppingListsService) {
 
   var vm = this;
 
   // what runs when the page loads
   function initialize() {
-    var shoppingListIdToShow = $stateParams.shoppingListId;
+    var shoppingListIdToShow = $stateParams.shoppingId;
 
     ShoppingListsService.getSingleShoppingListById(shoppingListIdToShow).then(function success(response) {
       vm.shoppingListEntry = response.data;
@@ -8420,11 +8423,11 @@ function ShowShoppingListController($state, $stateParams, ShoppingListsService) 
 
   // this is the function that runs when you click on the show shopping list button
   vm.showGoal = function (shoppingListIdForGoal) {
-    $state.go('goalIndex', { shoppingListId: shoppingListIdForGoal });
+    $state.go('goalIndex', { shoppingId: shoppingListIdForGoal });
   };
 }
 
-module.exports = ShowShoppingListController;
+module.exports = ShowShoppingController;
 
 /***/ }),
 /* 57 */
@@ -8460,29 +8463,24 @@ angular.module('myResolutionApp', ['ui.router', 'ngMessages']).config(uiRouterSe
 
 uiRouterSetup.$inject = ['$stateProvider', '$urlRouterProvider'];
 function uiRouterSetup($stateProvider, $urlRouterProvider) {
-  $stateProvider
-  // .state('goals', {
-  //   url: '/goals',
-  //   template: '<goals></goals>'
-  // })
-  .state('show_goal/:goalId', {
-    url: '/show_goal/:goalId',
+  $stateProvider.state('shoppingLists', {
+    url: '/shoppingLists',
+    template: '<shopping-lists></shopping-lists>'
+  }).state('showShopping', {
+    url: '/shoppingLists/:shoppingListId',
+    params: ['showId'],
+    template: '<show-shopping></show-shopping>'
+  }).state('goalIndex', {
+    url: '/shoppingLists/:shoppingListId/goals',
+    params: ['shoppingId'],
+    template: '<goals></goals>'
+  }).state('showGoal', {
+    url: '/shoppingLists/:shoppingListId/goals/:goalId',
     params: ['goalId'],
     template: '<show-goal></show-goal>'
   }).state('edit_goal/:goalId', {
     url: '/edit_goal/:goalId',
     template: '<edit-goal></edit-goal>'
-  }).state('shoppingLists', {
-    url: '/shoppingLists',
-    template: '<shopping-lists></shopping-lists>'
-  }).state('showShoppingList', {
-    url: '/shoppingLists/:shoppingListId',
-    params: ['showId'],
-    template: '<show-shoppingList></show-shoppinglist>'
-  }).state('goalIndex', {
-    url: '/shoppingLists/:shoppingListId/goals',
-    params: ['shoppingListId'],
-    template: '<goals></goals>'
   });
   $urlRouterProvider.otherwise('/shoppingLists');
 }
@@ -46210,15 +46208,15 @@ module.exports = "<div class=\"container\">\n  <h1>Show Goal</h1>\n  <div class=
 "use strict";
 
 
-var showShoppingListTemplate = __webpack_require__(94);
-var showShoppingListController = __webpack_require__(56);
+var showShoppingTemplate = __webpack_require__(94);
+var showShoppingController = __webpack_require__(56);
 
-var ShowShoppingListComponent = {
-  template: showShoppingListTemplate,
-  controller: showShoppingListController
+var ShowShoppingComponent = {
+  template: showShoppingTemplate,
+  controller: showShoppingController
 };
 
-angular.module('myResolutionApp').component('showShoppingList', ShowShoppingListComponent);
+angular.module('myResolutionApp').component('showShopping', ShowShoppingComponent);
 
 /***/ }),
 /* 94 */
@@ -46245,7 +46243,7 @@ function GoalsService($http) {
   };
 
   self.addNewGoal = function (shoppingListIdForGoal, newGoal) {
-    return $http.post('/shoppingLists/' + '/goal/', newGoal);
+    return $http.post('/shoppingLists/' + '/goals/', newGoal);
   };
 
   // self.getAllGoalsFromDatabase = function () {

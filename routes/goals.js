@@ -38,7 +38,7 @@ router.get('/:goalId', function (request, response) {
 router.post('/', (request, response) => {
 
   // grab the shoppingList ID we want to create a new goal for
-  var shoppingListId = request.params.shoppingListId;
+  var shoppingId = request.params.shoppingId;
   var goalId = request.params.goalId;
 
   // grab the new Goal info from the request
@@ -49,7 +49,7 @@ router.post('/', (request, response) => {
   var newGoalCost = request.body.cost;
 
   // Find the shoppingList in the database we want to save the new Goal for
-  ShoppingList.findById(shoppingListId)
+  ShoppingList.findById(shoppingId)
     .exec(function (error, shoppingList){
 
       // then build a new Goal model with the info

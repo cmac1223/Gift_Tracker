@@ -50,7 +50,7 @@ var users = require('./routes/users');
 app.use('/users', users);
 
 var goals = require('./routes/goals');
-app.use('/shoppingLists/:"shoppingListId/goals/', goals);
+app.use('/shoppingLists/:shoppingListId/goals/', goals);
 
 var shoppingLists = require('./routes/shoppingLists');
 app.use('/shoppingLists', shoppingLists);

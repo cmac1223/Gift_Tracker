@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var ShoppingList = require('../models/shoppingList');
+var Goal = require('../models/goal');
 
 router.get('/', (request, response) => {
 
@@ -19,7 +20,7 @@ router.get('/', (request, response) => {
 
 router.get('/:shoppingListId/', function (request, response) {
   
-  const shoppingListIdToShow = request.params.shoppingListId;
+  const shoppingListIdToShow = request.params.shoppingId;
 
   ShoppingList.findById(shoppingListIdToShow, function (error, foundShoppingList) {
     if (error){

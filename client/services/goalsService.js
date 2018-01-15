@@ -11,7 +11,7 @@ function GoalsService($http) {
   };
 
   self.addNewGoal = function (shoppingListIdForGoal, newGoal){
-    return $http.post('/shoppingLists/' + '/goal/', newGoal);
+    return $http.post('/shoppingLists/' + '/goals/', newGoal);
   }
   
   // self.getAllGoalsFromDatabase = function () {

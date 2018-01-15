@@ -1,12 +1,12 @@
-ShowShoppingListController.$inject = ['$state', '$stateParams', 'ShoppingListsService']
+ShowShoppingController.$inject = ['$state', '$stateParams', 'ShoppingListsService']
 
-function ShowShoppingListController($state, $stateParams, ShoppingListsService){
+function ShowShoppingController($state, $stateParams, ShoppingListsService){
 
   var vm = this;
 
   // what runs when the page loads
   function initialize(){
-    let shoppingListIdToShow = $stateParams.shoppingListId;
+    let shoppingListIdToShow = $stateParams.shoppingId;
 
     ShoppingListsService.getSingleShoppingListById(shoppingListIdToShow)
       .then(
@@ -27,8 +27,8 @@ function ShowShoppingListController($state, $stateParams, ShoppingListsService){
   
   // this is the function that runs when you click on the show shopping list button
   vm.showGoal = function (shoppingListIdForGoal){
-    $state.go('goalIndex', { shoppingListId: shoppingListIdForGoal });
+    $state.go('goalIndex', { shoppingId: shoppingListIdForGoal });
   }
 }
 
-module.exports = ShowShoppingListController;
+module.exports = ShowShoppingController;

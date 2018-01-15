@@ -2,8 +2,8 @@ GoalsController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$
 
 function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   let vm = this;
-  let shoppingListIdForGoal = $stateParams.shoppingListId;
-  vm.shoppingListId = $stateParams.shoppingListId;
+  let shoppingListIdForGoal = $stateParams.shoppingId;
+  vm.shoppingId = $stateParams.shoppingId;
 
   /*
   We will run this function the first time we load our component.
@@ -78,8 +78,12 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
       )
   }
 
-  vm.showGoal = function (goalId) {
-    $state.go('show_goal/:goalId', {goalId: goalId});
+  vm.openGoal = function (goalId) {
+    $state.go('showGoal', 
+    {
+      shoppingId: shoppingListIdForGoal,
+      goalId: goalId
+    });
   }
 
   // this function can be used to clear the goals form

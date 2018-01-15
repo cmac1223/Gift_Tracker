@@ -52,8 +52,8 @@ function ShoppingListsController($http, $state, $stateParams, ShoppingListsServi
       resetForm();
   };
   // renders the show shoppingList page on click
-  vm.showShoppingList = function (shoppingListId){
-    $state.go('showShoppingList', { shoppingListId: shoppingListId});
+  vm.showShoppingList = function (shoppingId){
+    $state.go('showShopping', { shoppingId: shoppingId});
   }
 }
 
