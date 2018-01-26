@@ -11,12 +11,12 @@ var GoalSchema = new Schema({
   updatedAt: Date
 })
 
-var ShoppingListSchema = new Schema({
+var ListSchema = new Schema({
   title: String,
-  list: [GoalSchema]
+  goal: [GoalSchema]
 });
 
-ShoppingListSchema.pre('save', function (next) {
+ListSchema.pre('save', function (next) {
   now = new Date();
   this.updatedAt = now;
 
@@ -37,7 +37,9 @@ GoalSchema.pre('save', function(next){
 })
 
 var GoalModel = mongoose.model('Goal', GoalSchema);
+var ListModel = mongoose.model('List', ListSchema);
 
 module.exports = {
-  Goal: GoalModel
+  Goal: GoalModel,
+  List: ListModel
 };

@@ -1,0 +1,30 @@
+<div class="container">
+  <h1>Shopping Lists</h1>
+  <!-- Show Shopping Lists Toggle -->
+  <button ng-click="lists = !lists">Select A Name</button>
+  <!-- Dropdown Structure -->
+  <div id="show-lists-card" ng-show="lists">
+    <ul>
+      <li ng-repeat="lists in $ctrl.listEntries">
+        <a ng-click="$ctrl.showList(lists._id)">
+          <h5>{{lists.title}}</h5>
+        </a>
+      </li>
+    </ul>
+
+  </div>
+
+  <!-- New Shopping List -->
+  <button type="submit" ng-click="visible = !visible">Create New List</button>
+  <div ng-show="visible">
+    <br>
+    <form name="newList" ng-submit="$ctrl.addNewList()">
+      <div>
+        <input  type="text" class="validate" ng-model="$ctrl.newListTitle" required>
+        <label for="Title">Title</label>
+      </div>  
+      <button type="submit" ng-click="visible = !visible" ng-show="true" value="Add New Shopping List"> Submit</button>
+    </form>
+
+  </div>
+</div>

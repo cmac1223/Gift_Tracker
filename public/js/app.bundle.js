@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 55);
+/******/ 	return __webpack_require__(__webpack_require__.s = 57);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -628,7 +628,7 @@ exports.silentRejection = function (error) {
     return exports.silenceUncaughtInPromise(coreservices_1.services.$q.reject(error));
 };
 //# sourceMappingURL=common.js.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(60)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(62)))
 
 /***/ }),
 /* 1 */
@@ -4494,21 +4494,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var interface_1 = __webpack_require__(7);
 var transition_1 = __webpack_require__(14);
 var hookRegistry_1 = __webpack_require__(21);
-var coreResolvables_1 = __webpack_require__(65);
-var redirectTo_1 = __webpack_require__(66);
-var onEnterExitRetain_1 = __webpack_require__(67);
-var resolve_1 = __webpack_require__(68);
-var views_1 = __webpack_require__(69);
-var updateGlobals_1 = __webpack_require__(70);
-var url_1 = __webpack_require__(71);
+var coreResolvables_1 = __webpack_require__(67);
+var redirectTo_1 = __webpack_require__(68);
+var onEnterExitRetain_1 = __webpack_require__(69);
+var resolve_1 = __webpack_require__(70);
+var views_1 = __webpack_require__(71);
+var updateGlobals_1 = __webpack_require__(72);
+var url_1 = __webpack_require__(73);
 var lazyLoad_1 = __webpack_require__(43);
 var transitionEventType_1 = __webpack_require__(44);
 var transitionHook_1 = __webpack_require__(11);
 var predicates_1 = __webpack_require__(1);
 var common_1 = __webpack_require__(0);
 var hof_1 = __webpack_require__(2);
-var ignoredTransition_1 = __webpack_require__(72);
-var invalidTransition_1 = __webpack_require__(73);
+var ignoredTransition_1 = __webpack_require__(74);
+var invalidTransition_1 = __webpack_require__(75);
 /**
  * The default [[Transition]] options.
  *
@@ -4789,7 +4789,7 @@ exports.locationPluginFactory = locationPluginFactory;
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(58);
+__webpack_require__(60);
 module.exports = angular;
 
 
@@ -8218,10 +8218,13 @@ module.exports = EditGoalController;
 "use strict";
 
 
-GoalsController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$scope'];
+GoalController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$scope'];
 
-function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
+function GoalController($http, $state, $stateParams, GoalsService, $scope) {
   var vm = this;
+  var listIdForGoal = $stateParams.listId;
+
+  vm.listId = $stateParams.listId;
 
   /*
   We will run this function the first time we load our component.
@@ -8229,7 +8232,7 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   */
 
   function initialize() {
-    getAllGoalsFromDatabase();
+    getAllGoalByListId();
   }
 
   initialize();
@@ -8237,17 +8240,17 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   // this function grabs all of the goals from the database
   // via an AJAX call
   console.log('>+++++<>');
-  function getAllGoalsFromDatabase() {
-    GoalsService.getAllGoalsFromDatabase().then(function success(response) {
+  function getAllGoalByListId() {
+    GoalsService.getAllGoalByListId(listIdForGoal).then(function success(response) {
       // if the call is successful, return the list of goals
       vm.goalEntries = response.data;
-      console.log(response.data);
+      console.log('>+++++++<> This bone fish is inside of the function yay!');
     }, function failure(response) {
       console.log('Error retrieving Goal Entries from database!');
     });
   }
   // This function handles our form submission.
-  vm.addGoal = function () {
+  vm.addNewGoal = function () {
 
     // the new Goal object will be created by binding to the form inputs
     var newGoal = {
@@ -8255,17 +8258,24 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
       cost: vm.newGoalCost
     };
 
+    // this function can be used to clear the shows form
+    // function resetForm (){
+    //   vm.newGoal = '';
+    // }
+
     // Make an ajax call to save the new Goal to the databse:
-    GoalsService.addNewGoalToDatabase(newGoal).then(function success(response) {
+    GoalsService.addNewGoal(listIdForGoal, newGoal).then(function success(response) {
       // only push to the goalEntries array if the ajax call is successful
       var newGoal = response.data;
-      vm.goalEntries.push(newGoal);
-      // then reset the form so we can submit more goals
-      resetForm();
+      // vm.goalEntries.push(newGoal);
+
+      //after a new Goal is added re-populate the page
+      getAllGoalByListId();
     }, function failure(response) {
       // if the http call is not successful, log the error
       //DO NOT clear the form
-      // DO NOT push the new object to the array
+      // DO NOT push the new object to the 
+
       console.log('Error saving new Goal to database!');
     });
   };
@@ -8283,8 +8293,16 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
     });
   };
 
+  // function that opens the goal
+  vm.openGoal = function (goalId) {
+    $state.go('showGoal', {
+      listId: listIdForGoal,
+      goalId: goalId
+    });
+  };
+
   vm.showGoal = function (goalId) {
-    $state.go('show_goal/:goalId', { goalId: goalId });
+    $state.go('/lists/:listId/goal/:goalId', { goalId: goalId });
   };
 
   // this function can be used to clear the goals form
@@ -8294,10 +8312,71 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   }
 }
 
-module.exports = GoalsController;
+module.exports = GoalController;
 
 /***/ }),
 /* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+ListController.$inject = ['$http', '$state', '$stateParams', 'ListsService', '$scope'];
+
+function ListController($http, $state, $stateParams, ListsService, $scope) {
+
+  var vm = this;
+  // this is what runs as the page loads
+  function initialize() {
+    getAllLists();
+  }
+  initialize();
+  // get all lists to render on the page
+  function getAllLists() {
+    ListsService.getAllLists().then(function success(response) {
+      // if the call is successful, return the list if Lists
+      vm.listEntries = response.data;
+      console.log(vm.listEntries);
+    }, function failure(response) {
+      console.log('Error retrieving  List Entries from database!');
+    });
+  }
+  // This function handles our form submission.
+  // add a new shoppinglist
+  vm.addNewList = function () {
+
+    // the new ShoppingList object will be created by binding to the form inputs
+    var newList = {
+      title: vm.newListTitle
+    };
+    // add a new List
+    ListsService.addNewList(newList).then(function success(response) {
+      console.log('List saved');
+      // only push to the ListEntries array if the ajax call is successful
+      var newList = response.data;
+      vm.listEntries.push(newList);
+      // then reset the form so we can submit more Lists
+      resetForm();
+    }, function failure(response) {
+
+      console.log('Error saving new  List to database!');
+    });
+
+    function resetForm() {
+      vm.newListTitle = '';
+    }
+    resetForm();
+  };
+  // renders the show List page on click
+  vm.showList = function (listId) {
+    $state.go('showList', { listId: listId });
+  };
+}
+
+module.exports = ListController;
+
+/***/ }),
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8328,53 +8407,104 @@ function ShowGoalController($state, $stateParams, GoalsService) {
 module.exports = ShowGoalController;
 
 /***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(56);
-__webpack_require__(83);
-__webpack_require__(52);
-__webpack_require__(85);
-__webpack_require__(53);
-__webpack_require__(87);
-__webpack_require__(54);
-module.exports = __webpack_require__(89);
-
-
-/***/ }),
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(57);
-__webpack_require__(81);
+ShowListController.$inject = ['$state', '$stateParams', 'ListsService'];
+
+function ShowListController($state, $stateParams, ListsService) {
+
+  var vm = this;
+
+  // what runs when the page loads
+  function initialize() {
+    var listIdToShow = $stateParams.listId;
+
+    ListsService.getSingleListById(listIdToShow).then(function success(response) {
+      vm.listEntry = response.data;
+      console.log(vm.listEntry);
+      console.log('this is listEntry  ' + vm.listEntry);
+      console.log('this is listIdToShow   ' + listIdToShow);
+    }, function failure(response) {
+      console.log('Failed to retrieve information for List with ID of ' + listIdToShow);
+    });
+  }
+
+  initialize();
+
+  // update shoppingList
+
+  // this is the function that runs when you click on the show shopping list button
+  vm.showGoal = function (listIdForGoal) {
+    $state.go('goalIndex', { listId: listIdForGoal });
+  };
+
+  // console.log('this is listId  ' + listId);
+}
+
+module.exports = ShowListController;
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(58);
+__webpack_require__(85);
+__webpack_require__(52);
+__webpack_require__(87);
+__webpack_require__(53);
+__webpack_require__(89);
+__webpack_require__(54);
+__webpack_require__(91);
+__webpack_require__(55);
+__webpack_require__(93);
+__webpack_require__(56);
+__webpack_require__(95);
+module.exports = __webpack_require__(96);
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(59);
+__webpack_require__(83);
 var angular = __webpack_require__(26);
 
 angular.module('myResolutionApp', ['ui.router', 'ngMessages']).config(uiRouterSetup);
 
 uiRouterSetup.$inject = ['$stateProvider', '$urlRouterProvider'];
 function uiRouterSetup($stateProvider, $urlRouterProvider) {
-  $stateProvider.state('goals', {
-    url: '/goals',
-    template: '<goals></goals>'
-  }).state('show_goal/:goalId', {
-    url: '/show_goal/:goalId',
+  $stateProvider.state('lists', {
+    url: '/lists',
+    template: '<list></list>'
+  }).state('showList', {
+    url: '/lists/:listId',
+    params: ['listId'],
+    template: '<show-list></show-list>'
+  }).state('goalIndex', {
+    url: '/lists/:listId/goal',
+    params: ['listId'],
+    template: '<goal></goal>'
+  }).state('showGoal', {
+    url: '/lists/:listId/goal/:goalId',
     params: ['goalId'],
     template: '<show-goal></show-goal>'
   }).state('edit_goal/:goalId', {
     url: '/edit_goal/:goalId',
     template: '<edit-goal></edit-goal>'
-  }).state('ShoppingLists', {
-    url: '/shoppingLists',
-    template: '<shoppingLists></shoppingLists>'
   });
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/lists');
 }
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -8385,7 +8515,7 @@ function uiRouterSetup($stateProvider, $urlRouterProvider) {
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
 (function (global, factory) {
-	 true ? factory(exports, __webpack_require__(26), __webpack_require__(59)) :
+	 true ? factory(exports, __webpack_require__(26), __webpack_require__(61)) :
 	typeof define === 'function' && define.amd ? define(['exports', 'angular', '@uirouter/core'], factory) :
 	(factory((global['@uirouter/angularjs'] = {}),global.angular,global['@uirouter/core']));
 }(this, (function (exports,ng_from_import,core) { 'use strict';
@@ -10394,7 +10524,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports) {
 
 /**
@@ -44590,7 +44720,7 @@ $provide.value("$locale", {
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44604,21 +44734,21 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(4));
-__export(__webpack_require__(61));
-__export(__webpack_require__(62));
 __export(__webpack_require__(63));
 __export(__webpack_require__(64));
-__export(__webpack_require__(74));
-__export(__webpack_require__(75));
+__export(__webpack_require__(65));
+__export(__webpack_require__(66));
 __export(__webpack_require__(76));
+__export(__webpack_require__(77));
+__export(__webpack_require__(78));
 __export(__webpack_require__(41));
 __export(__webpack_require__(36));
-__export(__webpack_require__(77));
-__export(__webpack_require__(80));
+__export(__webpack_require__(79));
+__export(__webpack_require__(82));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports) {
 
 var g;
@@ -44645,7 +44775,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44661,7 +44791,7 @@ __export(__webpack_require__(23));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44676,7 +44806,7 @@ __export(__webpack_require__(15));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44692,7 +44822,7 @@ __export(__webpack_require__(16));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44711,7 +44841,7 @@ __export(__webpack_require__(8));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44735,7 +44865,7 @@ exports.registerAddCoreResolvables = function (transitionService) {
 //# sourceMappingURL=coreResolvables.js.map
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44778,7 +44908,7 @@ exports.registerRedirectToHook = function (transitionService) {
 //# sourceMappingURL=redirectTo.js.map
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44841,7 +44971,7 @@ exports.registerOnEnterHook = function (transitionService) {
 //# sourceMappingURL=onEnterExitRetain.js.map
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44890,7 +45020,7 @@ exports.registerLazyResolveState = function (transitionService) {
 //# sourceMappingURL=resolve.js.map
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44943,7 +45073,7 @@ exports.registerActivateViews = function (transitionService) {
 //# sourceMappingURL=views.js.map
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44984,7 +45114,7 @@ exports.registerUpdateGlobalState = function (transitionService) {
 //# sourceMappingURL=updateGlobals.js.map
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45015,7 +45145,7 @@ exports.registerUpdateUrl = function (transitionService) {
 //# sourceMappingURL=url.js.map
 
 /***/ }),
-/* 72 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45052,7 +45182,7 @@ exports.registerIgnoredTransitionHook = function (transitionService) {
 //# sourceMappingURL=ignoredTransition.js.map
 
 /***/ }),
-/* 73 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45077,7 +45207,7 @@ exports.registerInvalidTransitionHook = function (transitionService) {
 //# sourceMappingURL=invalidTransition.js.map
 
 /***/ }),
-/* 74 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45111,7 +45241,7 @@ __export(__webpack_require__(24));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 75 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45128,7 +45258,7 @@ __export(__webpack_require__(42));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 76 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45141,7 +45271,7 @@ __export(__webpack_require__(40));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 77 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45155,11 +45285,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @module vanilla
  */
 /** */
-__export(__webpack_require__(78));
+__export(__webpack_require__(80));
 //# sourceMappingURL=vanilla.js.map
 
 /***/ }),
-/* 78 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45177,11 +45307,11 @@ __export(__webpack_require__(49));
 __export(__webpack_require__(50));
 __export(__webpack_require__(51));
 __export(__webpack_require__(25));
-__export(__webpack_require__(79));
+__export(__webpack_require__(81));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 79 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45216,7 +45346,7 @@ exports.memoryLocationPlugin = utils_1.locationPluginFactory("vanilla.memoryLoca
 //# sourceMappingURL=plugins.js.map
 
 /***/ }),
-/* 80 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45243,15 +45373,15 @@ exports.UIRouterPluginBase = UIRouterPluginBase;
 //# sourceMappingURL=interface.js.map
 
 /***/ }),
-/* 81 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(82);
+__webpack_require__(84);
 module.exports = 'ngMessages';
 
 
 /***/ }),
-/* 82 */
+/* 84 */
 /***/ (function(module, exports) {
 
 /**
@@ -45998,13 +46128,13 @@ function ngMessageDirectiveFactory() {
 
 
 /***/ }),
-/* 83 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var editGoalTemplate = __webpack_require__(84);
+var editGoalTemplate = __webpack_require__(86);
 var editGoalController = __webpack_require__(52);
 
 var EditGoalComponent = {
@@ -46015,33 +46145,10 @@ var EditGoalComponent = {
 angular.module('myResolutionApp').component('editGoal', EditGoalComponent);
 
 /***/ }),
-/* 84 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container\">\n  <div class=\"card\">\n    <div class=\"card-content\">\n      <form ng-submit=\"$ctrl.updateGoalInformation($ctrl.goalToUpdate._id)\">\n        <div>Entry: <input type=\"text\" ng-model=\"$ctrl.goalToUpdate.entry\"></div>\n        <div>Cost: <input type=\"number\" step=\".01\" ng-model=\"$ctrl.goalToUpdate.cost\"></div>\n        <div>Created At: {{$ctrl.goalToUpdate.createAt}}</div>\n        <div><input class=\"btn\" type=\"submit\" value=\"Update Goal Entry\"></div>\n      </form>\n    </div>\n  </div>\n</div>";
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var goalsTemplate = __webpack_require__(86);
-var goalsController = __webpack_require__(53);
-
-var GoalsComponent = {
-  template: goalsTemplate,
-  controller: goalsController
-};
-
-angular.module('myResolutionApp').component('goals', GoalsComponent);
-
-/***/ }),
 /* 86 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <form ng-submit=\"$ctrl.addGoal()\">\n                  <div>Entry: <input type=\"text\" ng-model=\"$ctrl.newGoalEntry\" required></div>\n                    <div>Cost: (USD)<input type=\"number\" step=\".01\" ng-model=\"$ctrl.newGoalCost\" required></div>\n                    <div><input class=\"btn\" type=\"submit\" value=\"Add to Goals\"></div>\n                </form>\n    \n            </div>\n        </div>\n\n        <div class=\"card\">\n          <div class=\"card-content\">\n            <h3>Total Goals</h3>\n            <h3><i>{{ $ctrl.totalGoals() | currency}}</i></h3>\n          </div>\n        </div>\n\n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <table>\n                    <tr>\n                        <th>Goals</th>\n                        <th>Cost</th>\n                        <th>Date Entered</th>\n                        <th></th>\n                    </tr>\n                    <tr class=\"row\" ng-repeat=\"goalEntry in $ctrl.goalEntries\">\n                        <td>{{ goalEntry.entry }}</td>\n                        <td>{{ goalEntry.cost | currency }}</td>\n                        <td>{{ goalEntry.createAt | date : 'medium'  }}</td>\n                        <td><button class=\"btn\" ng-click=\"$ctrl.showGoal(goalEntry._id)\">View</button></td>\n                        <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n                        <!-- and also what the id of the credit is so we can delete it from the database -->\n                        <td><button class=\"btn\" ng-click=\"$ctrl.deleteGoal($index, goalEntry._id)\">Delete</button></td>\n                    </tr>\n                </table>\n    \n            </div>\n        </div>\n</div>";
+module.exports = "<div class=\"container\">\n  <div class=\"card\">\n    <div class=\"card-content\">\n      <form ng-submit=\"$ctrl.updateGoalInformation($ctrl.goalToUpdate._id)\">\n        <div>Entry: <input type=\"text\" ng-model=\"$ctrl.goalToUpdate.entry\"></div>\n        <div>Cost: <input type=\"number\" step=\".01\" ng-model=\"$ctrl.goalToUpdate.cost\"></div>\n        <div>Created At: {{$ctrl.goalToUpdate.createAt}}</div>\n        <div><input class=\"btn\" type=\"submit\" value=\"Update Goal Entry\"></div>\n      </form>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
 /* 87 */
@@ -46050,8 +46157,54 @@ module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \
 "use strict";
 
 
-var showGoalTemplate = __webpack_require__(88);
-var showGoalController = __webpack_require__(54);
+var goalTemplate = __webpack_require__(88);
+var goalController = __webpack_require__(53);
+
+var GoalComponent = {
+  template: goalTemplate,
+  controller: goalController
+};
+
+angular.module('myResolutionApp').component('goal', GoalComponent);
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <form ng-submit=\"$ctrl.addNewGoal()\">\n                  <div>Entry: <input type=\"text\" ng-model=\"$ctrl.newGoalEntry\" required></div>\n                    <div>Cost: (USD)<input type=\"number\" step=\".01\" ng-model=\"$ctrl.newGoalCost\" required></div>\n                    <div><input class=\"btn\" type=\"submit\" value=\"Add to Goals\"></div>\n                </form>\n    \n            </div>\n        </div>\n\n        <div class=\"card\">\n          <div class=\"card-content\">\n            <h3>Total Goals</h3>\n            <h3><i>{{ $ctrl.totalGoals() | currency}}</i></h3>\n          </div>\n        </div>\n\n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <table>\n                    <tr>\n                        <th>Goals</th>\n                        <th>Cost</th>\n                        <th>Date Entered</th>\n                        <th></th>\n                    </tr>\n                    <tr class=\"row\" ng-repeat=\"goalEntry in $ctrl.goalEntries.goal\">\n                        <td>{{ goalEntry.entry }}</td>\n                        <td>{{ goalEntry.cost | currency }}</td>\n                        <td>{{ goalEntry.createAt | date : 'medium'  }}</td>\n                        <td><button class=\"btn\" ng-click=\"$ctrl.showGoal(goalEntry._id)\">View</button></td>\n                        <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n                        <!-- and also what the id of the credit is so we can delete it from the database -->\n                        <td><button class=\"btn\" ng-click=\"$ctrl.deleteGoal($index, goalEntry._id)\">Delete</button></td>\n                    </tr>\n                </table>\n    \n            </div>\n        </div>\n</div>";
+
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var listTemplate = __webpack_require__(90);
+var listController = __webpack_require__(54);
+
+var ListComponent = {
+  template: listTemplate,
+  controller: listController
+};
+
+angular.module('myResolutionApp').component('list', ListComponent);
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">\n  <h1>Shopping Lists</h1>\n  <!-- Show Shopping Lists Toggle -->\n  <button ng-click=\"lists = !lists\">Select A Name</button>\n  <!-- Dropdown Structure -->\n  <div id=\"show-lists-card\" ng-show=\"lists\">\n    <ul>\n      <li ng-repeat=\"lists in $ctrl.listEntries\">\n        <a ng-click=\"$ctrl.showList(lists._id)\">\n          <h5>{{lists.title}}</h5>\n        </a>\n      </li>\n    </ul>\n\n  </div>\n\n  <!-- New Shopping List -->\n  <button type=\"submit\" ng-click=\"visible = !visible\">Create New List</button>\n  <div ng-show=\"visible\">\n    <br>\n    <form name=\"newList\" ng-submit=\"$ctrl.addNewList()\">\n      <div>\n        <input  type=\"text\" class=\"validate\" ng-model=\"$ctrl.newListTitle\" required>\n        <label for=\"Title\">Title</label>\n      </div>  \n      <button type=\"submit\" ng-click=\"visible = !visible\" ng-show=\"true\" value=\"Add New Shopping List\"> Submit</button>\n    </form>\n\n  </div>\n</div>";
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var showGoalTemplate = __webpack_require__(92);
+var showGoalController = __webpack_require__(55);
 
 var ShowGoalComponent = {
   template: showGoalTemplate,
@@ -46061,13 +46214,36 @@ var ShowGoalComponent = {
 angular.module('myResolutionApp').component('showGoal', ShowGoalComponent);
 
 /***/ }),
-/* 88 */
+/* 92 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"container\">\n  <h1>Show Goal</h1>\n  <div class=\"card\">\n    <div class=\"card-content\">\n      <h3>Entry: {{$ctrl.goalEntry.entry}}</h3>\n      <h3>Cost: {{$ctrl.goalEntry.cost}}</h3>\n      <h3>Created On: {{$ctrl.goalEntry.createAt}}</h3>\n      <button class=\"btn\" ng-click=\"$ctrl.editGoalEntry($ctrl.goalEntry._id)\">Edit</button>\n    </div>\n  </div>\n\n</div>";
 
 /***/ }),
-/* 89 */
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var showListTemplate = __webpack_require__(94);
+var showListController = __webpack_require__(56);
+
+var ShowListComponent = {
+  template: showListTemplate,
+  controller: showListController
+};
+
+angular.module('myResolutionApp').component('showList', ShowListComponent);
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports) {
+
+module.exports = "<h1>SHOW SHOPPING LIST</h1>\n<div class=\"container\">\n  \n  <button ng-click=\"$ctrl.showGoal($ctrl.listEntry._id)\">blue</button>\n  \n  \n</div>";
+
+/***/ }),
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46078,28 +46254,68 @@ GoalsService.$inject = ['$http'];
 function GoalsService($http) {
   var self = this;
 
-  self.getAllGoalsFromDatabase = function () {
-    return $http.get('/goals');
+  self.getAllGoalByListId = function (listIdForGoal) {
+    return $http.get('/lists/' + listIdForGoal).then(function (response) {
+      return response;
+    });
   };
+
+  self.addNewGoal = function (listIdForGoal, newGoal) {
+    return $http.post('/lists/' + listIdForGoal + '/goal/', newGoal);
+  };
+
+  // self.getAllGoalsFromDatabase = function () {
+  //   return $http.get('/goals');
+  // }
 
   self.getSingleGoalById = function (goalIdToShow) {
     return $http.get('goals/' + goalIdToShow);
   };
 
-  self.addNewGoalToDatabase = function (newGoal) {
-    return $http.post('goals/', newGoal);
-  };
+  // self.addNewGoalToDatabase = function (newGoal) {
+  //   return $http.post('goals/', newGoal);
+  // }
 
-  self.deleteIdFromDatabase = function (goalIdToDeleteFromDatabase) {
-    return $http.delete('goals/' + goalIdToDeleteFromDatabase);
-  };
+  // self.deleteIdFromDatabase = function (goalIdToDeleteFromDatabase) {
+  //   return $http.delete('goals/' + goalIdToDeleteFromDatabase);
+  // }
 
-  self.updateSingleGoal = function (goalToUpdate) {
-    return $http.patch('goals/', goalToUpdate);
-  };
+  // self.updateSingleGoal = function (goalToUpdate) {
+  //   return $http.patch('goals/', goalToUpdate);
+  // }
 };
 
 angular.module('myResolutionApp').service('GoalsService', GoalsService);
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+ListsService.$inject = ['$http'];
+
+// makes https calls for the shoppingList controller
+function ListsService($http) {
+  var self = this;
+  self.getAllLists = function () {
+    return $http.get('/lists');
+  };
+  self.addNewList = function (newList) {
+    return $http.post('/lists', newList);
+  };
+  self.getSingleListById = function (listIdToShow) {
+    return $http.get('lists/' + listIdToShow);
+  };
+  self.updateSingleList = function (listToUpdate) {
+    return $http.patch('lists/', listToUpdate);
+  };
+  self.deleteIdFromDatabase = function (listIdToDeleteFromDatabase) {
+    return $http.delete('lists/' + listIdToDeleteFromDatabase);
+  };
+}
+angular.module('myResolutionApp').service('ListsService', ListsService);
 
 /***/ })
 /******/ ]);
