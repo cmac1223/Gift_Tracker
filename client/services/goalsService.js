@@ -3,24 +3,24 @@ GoalsService.$inject = ['$http']
 function GoalsService($http) {
   var self = this;
 
-  self.getAllGoalByShoppingListId = function (shoppingListIdForGoal){
-    return $http.get('/shoppingLists/' + shoppingListIdForGoal)
+  self.getAllGoalByListId = function (listIdForGoal){
+    return $http.get('/lists/' + listIdForGoal)
       .then(function (response) {
         return response;
       });
   };
 
-  self.addNewGoal = function (shoppingListIdForGoal, newGoal){
-    return $http.post('/shoppingLists/' + '/goals/', newGoal);
+  self.addNewGoal = function (listIdForGoal, newGoal){
+    return $http.post('/lists/' + listIdForGoal + '/goal/' , newGoal);
   }
   
   // self.getAllGoalsFromDatabase = function () {
   //   return $http.get('/goals');
   // }
 
-  // self.getSingleGoalById = function (goalIdToShow) {
-  //   return $http.get('goals/' + goalIdToShow);
-  // }
+  self.getSingleGoalById = function (goalIdToShow) {
+    return $http.get('goals/' + goalIdToShow);
+  }
 
   // self.addNewGoalToDatabase = function (newGoal) {
   //   return $http.post('goals/', newGoal);

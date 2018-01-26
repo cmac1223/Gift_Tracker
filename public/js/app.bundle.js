@@ -8218,12 +8218,13 @@ module.exports = EditGoalController;
 "use strict";
 
 
-GoalsController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$scope'];
+GoalController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$scope'];
 
-function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
+function GoalController($http, $state, $stateParams, GoalsService, $scope) {
   var vm = this;
-  var shoppingListIdForGoal = $stateParams.shoppingId;
-  vm.shoppingId = $stateParams.shoppingId;
+  var listIdForGoal = $stateParams.listId;
+
+  vm.listId = $stateParams.listId;
 
   /*
   We will run this function the first time we load our component.
@@ -8231,7 +8232,7 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   */
 
   function initialize() {
-    getAllGoalByShoppingListId();
+    getAllGoalByListId();
   }
 
   initialize();
@@ -8239,11 +8240,11 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   // this function grabs all of the goals from the database
   // via an AJAX call
   console.log('>+++++<>');
-  function getAllGoalByShoppingListId() {
-    GoalsService.getAllGoalByShoppingListId(shoppingListIdForGoal).then(function success(response) {
+  function getAllGoalByListId() {
+    GoalsService.getAllGoalByListId(listIdForGoal).then(function success(response) {
       // if the call is successful, return the list of goals
       vm.goalEntries = response.data;
-      console.log(response.data);
+      console.log('>+++++++<> This bone fish is inside of the function yay!');
     }, function failure(response) {
       console.log('Error retrieving Goal Entries from database!');
     });
@@ -8257,17 +8258,24 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
       cost: vm.newGoalCost
     };
 
+    // this function can be used to clear the shows form
+    // function resetForm (){
+    //   vm.newGoal = '';
+    // }
+
     // Make an ajax call to save the new Goal to the databse:
-    GoalsService.addNewGoal(shoppingListIdForGoal, newGoal).then(function success(response) {
+    GoalsService.addNewGoal(listIdForGoal, newGoal).then(function success(response) {
       // only push to the goalEntries array if the ajax call is successful
       var newGoal = response.data;
       // vm.goalEntries.push(newGoal);
-      // then reset the form so we can submit more goals
-      resetForm();
+
+      //after a new Goal is added re-populate the page
+      getAllGoalByListId();
     }, function failure(response) {
       // if the http call is not successful, log the error
       //DO NOT clear the form
-      // DO NOT push the new object to the array
+      // DO NOT push the new object to the 
+
       console.log('Error saving new Goal to database!');
     });
   };
@@ -8285,11 +8293,16 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
     });
   };
 
+  // function that opens the goal
   vm.openGoal = function (goalId) {
     $state.go('showGoal', {
-      shoppingId: shoppingListIdForGoal,
+      listId: listIdForGoal,
       goalId: goalId
     });
+  };
+
+  vm.showGoal = function (goalId) {
+    $state.go('/lists/:listId/goal/:goalId', { goalId: goalId });
   };
 
   // this function can be used to clear the goals form
@@ -8299,7 +8312,7 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   }
 }
 
-module.exports = GoalsController;
+module.exports = GoalController;
 
 /***/ }),
 /* 54 */
@@ -8308,58 +8321,59 @@ module.exports = GoalsController;
 "use strict";
 
 
-ShoppingListsController.$inject = ['$http', '$state', '$stateParams', 'ShoppingListsService', '$scope'];
+ListController.$inject = ['$http', '$state', '$stateParams', 'ListsService', '$scope'];
 
-function ShoppingListsController($http, $state, $stateParams, ShoppingListsService, $scope) {
+function ListController($http, $state, $stateParams, ListsService, $scope) {
 
   var vm = this;
   // this is what runs as the page loads
   function initialize() {
-    getAllShoppingLists();
+    getAllLists();
   }
   initialize();
-  // get all shoppinglists to render on the page
-  function getAllShoppingLists() {
-    ShoppingListsService.getAllShoppingLists().then(function success(response) {
-      // if the call is successful, return the list if shoppingLists
-      vm.shoppingListEntries = response.data;
+  // get all lists to render on the page
+  function getAllLists() {
+    ListsService.getAllLists().then(function success(response) {
+      // if the call is successful, return the list if Lists
+      vm.listEntries = response.data;
+      console.log(vm.listEntries);
     }, function failure(response) {
-      console.log('Error retrieving Shopping List Entries from database!');
+      console.log('Error retrieving  List Entries from database!');
     });
   }
   // This function handles our form submission.
   // add a new shoppinglist
-  vm.addNewShoppingList = function () {
+  vm.addNewList = function () {
 
     // the new ShoppingList object will be created by binding to the form inputs
-    var newShoppingList = {
-      title: vm.newShoppingListTitle
+    var newList = {
+      title: vm.newListTitle
     };
-    // add a new shoppingList
-    ShoppingListsService.addNewShoppingList(newShoppingList).then(function success(response) {
-      console.log('shoppingList saved');
-      // only push to the shoppingListEntries array if the ajax call is successful
-      var newShoppingList = response.data;
-      vm.shoppingListEntries.push(newShoppingList);
-      // then reset the form so we can submit more shoppingLists
+    // add a new List
+    ListsService.addNewList(newList).then(function success(response) {
+      console.log('List saved');
+      // only push to the ListEntries array if the ajax call is successful
+      var newList = response.data;
+      vm.listEntries.push(newList);
+      // then reset the form so we can submit more Lists
       resetForm();
     }, function failure(response) {
 
-      console.log('Error saving new Shopping List to database!');
+      console.log('Error saving new  List to database!');
     });
 
     function resetForm() {
-      vm.newShoppingListTitle = '';
+      vm.newListTitle = '';
     }
     resetForm();
   };
-  // renders the show shoppingList page on click
-  vm.showShoppingList = function (shoppingId) {
-    $state.go('showShopping', { shoppingId: shoppingId });
+  // renders the show List page on click
+  vm.showList = function (listId) {
+    $state.go('showList', { listId: listId });
   };
 }
 
-module.exports = ShoppingListsController;
+module.exports = ListController;
 
 /***/ }),
 /* 55 */
@@ -8399,21 +8413,23 @@ module.exports = ShowGoalController;
 "use strict";
 
 
-ShowShoppingController.$inject = ['$state', '$stateParams', 'ShoppingListsService'];
+ShowListController.$inject = ['$state', '$stateParams', 'ListsService'];
 
-function ShowShoppingController($state, $stateParams, ShoppingListsService) {
+function ShowListController($state, $stateParams, ListsService) {
 
   var vm = this;
 
   // what runs when the page loads
   function initialize() {
-    var shoppingListIdToShow = $stateParams.shoppingId;
+    var listIdToShow = $stateParams.listId;
 
-    ShoppingListsService.getSingleShoppingListById(shoppingListIdToShow).then(function success(response) {
-      vm.shoppingListEntry = response.data;
-      console.log(vm.shoppingListEntry);
+    ListsService.getSingleListById(listIdToShow).then(function success(response) {
+      vm.listEntry = response.data;
+      console.log(vm.listEntry);
+      console.log('this is listEntry  ' + vm.listEntry);
+      console.log('this is listIdToShow   ' + listIdToShow);
     }, function failure(response) {
-      console.log('Failed to retrieve information for ShoppingList with ID of ' + shoppingListIdToShow);
+      console.log('Failed to retrieve information for List with ID of ' + listIdToShow);
     });
   }
 
@@ -8422,12 +8438,14 @@ function ShowShoppingController($state, $stateParams, ShoppingListsService) {
   // update shoppingList
 
   // this is the function that runs when you click on the show shopping list button
-  vm.showGoal = function (shoppingListIdForGoal) {
-    $state.go('goalIndex', { shoppingId: shoppingListIdForGoal });
+  vm.showGoal = function (listIdForGoal) {
+    $state.go('goalIndex', { listId: listIdForGoal });
   };
+
+  // console.log('this is listId  ' + listId);
 }
 
-module.exports = ShowShoppingController;
+module.exports = ShowListController;
 
 /***/ }),
 /* 57 */
@@ -8463,26 +8481,26 @@ angular.module('myResolutionApp', ['ui.router', 'ngMessages']).config(uiRouterSe
 
 uiRouterSetup.$inject = ['$stateProvider', '$urlRouterProvider'];
 function uiRouterSetup($stateProvider, $urlRouterProvider) {
-  $stateProvider.state('shoppingLists', {
-    url: '/shoppingLists',
-    template: '<shopping-lists></shopping-lists>'
-  }).state('showShopping', {
-    url: '/shoppingLists/:shoppingListId',
-    params: ['showId'],
-    template: '<show-shopping></show-shopping>'
+  $stateProvider.state('lists', {
+    url: '/lists',
+    template: '<list></list>'
+  }).state('showList', {
+    url: '/lists/:listId',
+    params: ['listId'],
+    template: '<show-list></show-list>'
   }).state('goalIndex', {
-    url: '/shoppingLists/:shoppingListId/goals',
-    params: ['shoppingId'],
-    template: '<goals></goals>'
+    url: '/lists/:listId/goal',
+    params: ['listId'],
+    template: '<goal></goal>'
   }).state('showGoal', {
-    url: '/shoppingLists/:shoppingListId/goals/:goalId',
+    url: '/lists/:listId/goal/:goalId',
     params: ['goalId'],
     template: '<show-goal></show-goal>'
   }).state('edit_goal/:goalId', {
     url: '/edit_goal/:goalId',
     template: '<edit-goal></edit-goal>'
   });
-  $urlRouterProvider.otherwise('/shoppingLists');
+  $urlRouterProvider.otherwise('/lists');
 }
 
 /***/ }),
@@ -46139,21 +46157,21 @@ module.exports = "<div class=\"container\">\n  <div class=\"card\">\n    <div cl
 "use strict";
 
 
-var goalsTemplate = __webpack_require__(88);
-var goalsController = __webpack_require__(53);
+var goalTemplate = __webpack_require__(88);
+var goalController = __webpack_require__(53);
 
-var GoalsComponent = {
-  template: goalsTemplate,
-  controller: goalsController
+var GoalComponent = {
+  template: goalTemplate,
+  controller: goalController
 };
 
-angular.module('myResolutionApp').component('goals', GoalsComponent);
+angular.module('myResolutionApp').component('goal', GoalComponent);
 
 /***/ }),
 /* 88 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <form ng-submit=\"$ctrl.addGoal()\">\n                  <div>Entry: <input type=\"text\" ng-model=\"$ctrl.newGoalEntry\" required></div>\n                    <div>Cost: (USD)<input type=\"number\" step=\".01\" ng-model=\"$ctrl.newGoalCost\" required></div>\n                    <div><input class=\"btn\" type=\"submit\" value=\"Add to Goals\"></div>\n                </form>\n    \n            </div>\n        </div>\n\n        <div class=\"card\">\n          <div class=\"card-content\">\n            <h3>Total Goals</h3>\n            <h3><i>{{ $ctrl.totalGoals() | currency}}</i></h3>\n          </div>\n        </div>\n\n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <table>\n                    <tr>\n                        <th>Goals</th>\n                        <th>Cost</th>\n                        <th>Date Entered</th>\n                        <th></th>\n                    </tr>\n                    <tr class=\"row\" ng-repeat=\"goalEntry in $ctrl.goalEntries\">\n                        <td>{{ goalEntry.entry }}</td>\n                        <td>{{ goalEntry.cost | currency }}</td>\n                        <td>{{ goalEntry.createAt | date : 'medium'  }}</td>\n                        <td><button class=\"btn\" ng-click=\"$ctrl.showGoal(goalEntry._id)\">View</button></td>\n                        <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n                        <!-- and also what the id of the credit is so we can delete it from the database -->\n                        <td><button class=\"btn\" ng-click=\"$ctrl.deleteGoal($index, goalEntry._id)\">Delete</button></td>\n                    </tr>\n                </table>\n    \n            </div>\n        </div>\n</div>";
+module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <form ng-submit=\"$ctrl.addNewGoal()\">\n                  <div>Entry: <input type=\"text\" ng-model=\"$ctrl.newGoalEntry\" required></div>\n                    <div>Cost: (USD)<input type=\"number\" step=\".01\" ng-model=\"$ctrl.newGoalCost\" required></div>\n                    <div><input class=\"btn\" type=\"submit\" value=\"Add to Goals\"></div>\n                </form>\n    \n            </div>\n        </div>\n\n        <div class=\"card\">\n          <div class=\"card-content\">\n            <h3>Total Goals</h3>\n            <h3><i>{{ $ctrl.totalGoals() | currency}}</i></h3>\n          </div>\n        </div>\n\n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <table>\n                    <tr>\n                        <th>Goals</th>\n                        <th>Cost</th>\n                        <th>Date Entered</th>\n                        <th></th>\n                    </tr>\n                    <tr class=\"row\" ng-repeat=\"goalEntry in $ctrl.goalEntries.goal\">\n                        <td>{{ goalEntry.entry }}</td>\n                        <td>{{ goalEntry.cost | currency }}</td>\n                        <td>{{ goalEntry.createAt | date : 'medium'  }}</td>\n                        <td><button class=\"btn\" ng-click=\"$ctrl.showGoal(goalEntry._id)\">View</button></td>\n                        <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n                        <!-- and also what the id of the credit is so we can delete it from the database -->\n                        <td><button class=\"btn\" ng-click=\"$ctrl.deleteGoal($index, goalEntry._id)\">Delete</button></td>\n                    </tr>\n                </table>\n    \n            </div>\n        </div>\n</div>";
 
 /***/ }),
 /* 89 */
@@ -46162,21 +46180,21 @@ module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \
 "use strict";
 
 
-var shoppingListsTemplate = __webpack_require__(90);
-var shoppingListsController = __webpack_require__(54);
+var listTemplate = __webpack_require__(90);
+var listController = __webpack_require__(54);
 
-var ShoppingListsComponent = {
-  template: shoppingListsTemplate,
-  controller: shoppingListsController
+var ListComponent = {
+  template: listTemplate,
+  controller: listController
 };
 
-angular.module('myResolutionApp').component('shoppingLists', ShoppingListsComponent);
+angular.module('myResolutionApp').component('list', ListComponent);
 
 /***/ }),
 /* 90 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <h1>Shopping Lists</h1>\n  <!-- Show Shopping Lists Toggle -->\n  <button ng-click=\"sLists = !sLists\">Select A Name</button>\n  <!-- Dropdown Structure -->\n  <div id=\"show-sLists-card\" ng-show=\"sLists\">\n    <ul>\n      <li ng-repeat=\"sLists in $ctrl.shoppingListEntries\">\n        <a ng-click=\"$ctrl.showShoppingList(sLists._id)\">\n          <h5>{{sLists.title}}</h5>\n        </a>\n      </li>\n    </ul>\n\n  </div>\n\n  <!-- New Shopping List -->\n  <button type=\"submit\" ng-click=\"visible = !visible\">Create New List</button>\n  <div ng-show=\"visible\">\n    <br>\n    <form name=\"newShoppingList\" ng-submit=\"$ctrl.addNewShoppingList()\">\n      <div>\n        <input  type=\"text\" class=\"validate\" ng-model=\"$ctrl.newShoppingListTitle\" required>\n        <label for=\"Title\">Title</label>\n      </div>  \n      <button type=\"submit\" ng-click=\"visible = !visible\" ng-show=\"true\" value=\"Add New Shopping List\"> Submit</button>\n    </form>\n\n  </div>\n</div>";
+module.exports = "<div class=\"container\">\n  <h1>Shopping Lists</h1>\n  <!-- Show Shopping Lists Toggle -->\n  <button ng-click=\"lists = !lists\">Select A Name</button>\n  <!-- Dropdown Structure -->\n  <div id=\"show-lists-card\" ng-show=\"lists\">\n    <ul>\n      <li ng-repeat=\"lists in $ctrl.listEntries\">\n        <a ng-click=\"$ctrl.showList(lists._id)\">\n          <h5>{{lists.title}}</h5>\n        </a>\n      </li>\n    </ul>\n\n  </div>\n\n  <!-- New Shopping List -->\n  <button type=\"submit\" ng-click=\"visible = !visible\">Create New List</button>\n  <div ng-show=\"visible\">\n    <br>\n    <form name=\"newList\" ng-submit=\"$ctrl.addNewList()\">\n      <div>\n        <input  type=\"text\" class=\"validate\" ng-model=\"$ctrl.newListTitle\" required>\n        <label for=\"Title\">Title</label>\n      </div>  \n      <button type=\"submit\" ng-click=\"visible = !visible\" ng-show=\"true\" value=\"Add New Shopping List\"> Submit</button>\n    </form>\n\n  </div>\n</div>";
 
 /***/ }),
 /* 91 */
@@ -46208,21 +46226,21 @@ module.exports = "<div class=\"container\">\n  <h1>Show Goal</h1>\n  <div class=
 "use strict";
 
 
-var showShoppingTemplate = __webpack_require__(94);
-var showShoppingController = __webpack_require__(56);
+var showListTemplate = __webpack_require__(94);
+var showListController = __webpack_require__(56);
 
-var ShowShoppingComponent = {
-  template: showShoppingTemplate,
-  controller: showShoppingController
+var ShowListComponent = {
+  template: showListTemplate,
+  controller: showListController
 };
 
-angular.module('myResolutionApp').component('showShopping', ShowShoppingComponent);
+angular.module('myResolutionApp').component('showList', ShowListComponent);
 
 /***/ }),
 /* 94 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <button ng-click=\"$ctrl.showGoal($ctrl.shoppingListEntry._id)\">Name of List</button>\n</div>\n<h1>SHOW SHOPPING LIST</h1>";
+module.exports = "<h1>SHOW SHOPPING LIST</h1>\n<div class=\"container\">\n  \n  <button ng-click=\"$ctrl.showGoal($ctrl.listEntry._id)\">blue</button>\n  \n  \n</div>";
 
 /***/ }),
 /* 95 */
@@ -46236,23 +46254,23 @@ GoalsService.$inject = ['$http'];
 function GoalsService($http) {
   var self = this;
 
-  self.getAllGoalByShoppingListId = function (shoppingListIdForGoal) {
-    return $http.get('/shoppingLists/' + shoppingListIdForGoal).then(function (response) {
+  self.getAllGoalByListId = function (listIdForGoal) {
+    return $http.get('/lists/' + listIdForGoal).then(function (response) {
       return response;
     });
   };
 
-  self.addNewGoal = function (shoppingListIdForGoal, newGoal) {
-    return $http.post('/shoppingLists/' + '/goals/', newGoal);
+  self.addNewGoal = function (listIdForGoal, newGoal) {
+    return $http.post('/lists/' + listIdForGoal + '/goal/', newGoal);
   };
 
   // self.getAllGoalsFromDatabase = function () {
   //   return $http.get('/goals');
   // }
 
-  // self.getSingleGoalById = function (goalIdToShow) {
-  //   return $http.get('goals/' + goalIdToShow);
-  // }
+  self.getSingleGoalById = function (goalIdToShow) {
+    return $http.get('goals/' + goalIdToShow);
+  };
 
   // self.addNewGoalToDatabase = function (newGoal) {
   //   return $http.post('goals/', newGoal);
@@ -46276,28 +46294,28 @@ angular.module('myResolutionApp').service('GoalsService', GoalsService);
 "use strict";
 
 
-ShoppingListsService.$inject = ['$http'];
+ListsService.$inject = ['$http'];
 
 // makes https calls for the shoppingList controller
-function ShoppingListsService($http) {
+function ListsService($http) {
   var self = this;
-  self.getAllShoppingLists = function () {
-    return $http.get('/shoppingLists');
+  self.getAllLists = function () {
+    return $http.get('/lists');
   };
-  self.addNewShoppingList = function (newShoppingList) {
-    return $http.post('/shoppingLists', newShoppingList);
+  self.addNewList = function (newList) {
+    return $http.post('/lists', newList);
   };
-  self.getSingleShoppingListById = function (shoppingListIdToShow) {
-    return $http.get('shoppingLists/', shoppingListIdToShow);
+  self.getSingleListById = function (listIdToShow) {
+    return $http.get('lists/' + listIdToShow);
   };
-  self.updateSingleShoppingList = function (shoppingListToUpdate) {
-    return $http.patch('shoppingLists/', shoppingListToUpdate);
+  self.updateSingleList = function (listToUpdate) {
+    return $http.patch('lists/', listToUpdate);
   };
-  self.deleteIdFromDatabase = function (shoppingListIdToDeleteFromDatabase) {
-    return $http.delete('shoppingLists/', shoppingListIdToDeleteFromDatabase);
+  self.deleteIdFromDatabase = function (listIdToDeleteFromDatabase) {
+    return $http.delete('lists/' + listIdToDeleteFromDatabase);
   };
 }
-angular.module('myResolutionApp').service('ShoppingListsService', ShoppingListsService);
+angular.module('myResolutionApp').service('ListsService', ListsService);
 
 /***/ })
 /******/ ]);

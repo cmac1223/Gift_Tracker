@@ -7,29 +7,29 @@ angular.module('myResolutionApp', ['ui.router', 'ngMessages']).config(uiRouterSe
 uiRouterSetup.$inject = ['$stateProvider', '$urlRouterProvider'];
 function uiRouterSetup($stateProvider, $urlRouterProvider) {
   $stateProvider
-  .state('shoppingLists', {
-    url: '/shoppingLists',
-    template: '<shopping-lists></shopping-lists>'
+  .state('lists', {
+    url: '/lists',
+    template: '<list></list>'
   })
-  .state('showShopping', {
-    url: '/shoppingLists/:shoppingListId',
-    params: ['showId'],
-    template: '<show-shopping></show-shopping>'
+  .state('showList', {
+    url: '/lists/:listId',
+    params: ['listId'],
+    template: '<show-list></show-list>'
   })
   .state('goalIndex', {
-    url:'/shoppingLists/:shoppingListId/goals',
-    params: ['shoppingId'],
-    template: '<goals></goals>'
+    url:'/lists/:listId/goal',
+    params: ['listId'],
+    template: '<goal></goal>'
   })
   .state('showGoal', {
-    url: '/shoppingLists/:shoppingListId/goals/:goalId',
-    params: [ 'goalId' ],
+    url: '/lists/:listId/goal/:goalId',
+    params: ['goalId'],
     template: '<show-goal></show-goal>'
   })
   .state('edit_goal/:goalId', {
     url: '/edit_goal/:goalId',
     template: '<edit-goal></edit-goal>'
   })
-  $urlRouterProvider.otherwise('/shoppingLists');  
+  $urlRouterProvider.otherwise('/lists');  
 }
 

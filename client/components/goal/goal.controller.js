@@ -1,9 +1,10 @@
-GoalsController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$scope'];
+GoalController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$scope'];
 
-function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
+function GoalController($http, $state, $stateParams, GoalsService, $scope) {
   let vm = this;
-  let shoppingListIdForGoal = $stateParams.shoppingId;
-  vm.shoppingId = $stateParams.shoppingId;
+  let listIdForGoal = $stateParams.listId;
+  
+  vm.listId = $stateParams.listId;
 
   /*
   We will run this function the first time we load our component.
@@ -11,7 +12,7 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   */
 
   function initialize() {
-    getAllGoalByShoppingListId();
+    getAllGoalByListId();
   }
 
   initialize();
@@ -19,13 +20,14 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
   // this function grabs all of the goals from the database
   // via an AJAX call
   console.log('>+++++<>')
-  function getAllGoalByShoppingListId() {
-    GoalsService.getAllGoalByShoppingListId(shoppingListIdForGoal)
-     .then(
+  function getAllGoalByListId() {
+    GoalsService.getAllGoalByListId(listIdForGoal)
+    .then(
       function success(response) {
         // if the call is successful, return the list of goals
         vm.goalEntries = response.data;
-        console.log(response.data)
+        console.log('>+++++++<> This bone fish is inside of the function yay!')
+        
       },
 
       function failure(response) {
@@ -42,20 +44,28 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
       cost: vm.newGoalCost
     };
 
+    // this function can be used to clear the shows form
+    // function resetForm (){
+    //   vm.newGoal = '';
+    // }
+
     // Make an ajax call to save the new Goal to the databse:
-    GoalsService.addNewGoal(shoppingListIdForGoal, newGoal)
+    GoalsService.addNewGoal(listIdForGoal, newGoal)
       .then(
         function success(response) {
           // only push to the goalEntries array if the ajax call is successful
           const newGoal = response.data;
           // vm.goalEntries.push(newGoal);
-          // then reset the form so we can submit more goals
-          resetForm();
+         
+          //after a new Goal is added re-populate the page
+          getAllGoalByListId()
+
         },
         function failure(response) {
           // if the http call is not successful, log the error
           //DO NOT clear the form
-          // DO NOT push the new object to the array
+          // DO NOT push the new object to the 
+          
           console.log('Error saving new Goal to database!');
         }
       )
@@ -78,12 +88,17 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
       )
   }
 
+  // function that opens the goal
   vm.openGoal = function (goalId) {
     $state.go('showGoal', 
     {
-      shoppingId: shoppingListIdForGoal,
+      listId: listIdForGoal,
       goalId: goalId
     });
+  }
+
+  vm.showGoal = function (goalId) {
+    $state.go('/lists/:listId/goal/:goalId', {goalId: goalId});
   }
 
   // this function can be used to clear the goals form
@@ -94,4 +109,4 @@ function GoalsController($http, $state, $stateParams, GoalsService, $scope) {
 
 }
 
-module.exports = GoalsController;
+module.exports = GoalController;

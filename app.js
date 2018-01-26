@@ -49,11 +49,12 @@ app.use('/', index);
 var users = require('./routes/users');
 app.use('/users', users);
 
-var goals = require('./routes/goals');
-app.use('/shoppingLists/:shoppingListId/goals/', goals);
+var lists = require('./routes/lists');
+app.use('/lists', lists);
 
-var shoppingLists = require('./routes/shoppingLists');
-app.use('/shoppingLists', shoppingLists);
+var goal = require('./routes/goal');
+app.use('/lists/:listId/goal/', goal);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
