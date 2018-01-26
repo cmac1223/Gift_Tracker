@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-content">
     
-                <form ng-submit="$ctrl.addGoal()">
+                <form ng-submit="$ctrl.addNewGoal()">
                   <div>Entry: <input type="text" ng-model="$ctrl.newGoalEntry" required></div>
                     <div>Cost: (USD)<input type="number" step=".01" ng-model="$ctrl.newGoalCost" required></div>
                     <div><input class="btn" type="submit" value="Add to Goals"></div>
@@ -31,7 +31,7 @@
                         <th>Date Entered</th>
                         <th></th>
                     </tr>
-                    <tr class="row" ng-repeat="goalEntry in $ctrl.goalEntries">
+                    <tr class="row" ng-repeat="goalEntry in $ctrl.goalEntries.goal">
                         <td>{{ goalEntry.entry }}</td>
                         <td>{{ goalEntry.cost | currency }}</td>
                         <td>{{ goalEntry.createAt | date : 'medium'  }}</td>
