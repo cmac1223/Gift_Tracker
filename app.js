@@ -53,7 +53,7 @@ var lists = require('./routes/lists');
 app.use('/lists', lists);
 
 var goal = require('./routes/goal');
-app.use('/lists/:listId/goal/', goal);
+app.use('/lists/:listId/goal', goal);
 
 
 // catch 404 and forward to error handler

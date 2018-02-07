@@ -18,6 +18,7 @@ router.get('/', (request, response) => {
   })
 })
 
+//show route
 router.get('/:listId/', function (request, response) {
   
   const listIdToShow = request.params.listId;
@@ -51,6 +52,19 @@ router.post('/', (request, response) => {
     }
     // once the new shoppingList has been saved, return it to the client
     response.send(newList);
+  });
+});
+
+// deletes the list route - finds by id and removes from database
+router.delete('/:listId', function (request, response){
+  const listIdToDelete = request.params.listId;
+  List.findByIdAndRemove(listIdToDelete).exec(function (error){
+    if (error){
+      console.log("Error while deleting List with ID of " + listIdToDelete);
+      return;
+    }
+    // once the list has been deleted, tell the server everything was successful
+    response.sendStatus(200);
   });
 });
 

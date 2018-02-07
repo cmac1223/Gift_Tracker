@@ -8244,7 +8244,6 @@ function GoalController($http, $state, $stateParams, GoalsService, $scope) {
     GoalsService.getAllGoalByListId(listIdForGoal).then(function success(response) {
       // if the call is successful, return the list of goals
       vm.goalEntries = response.data;
-      console.log('>+++++++<> This bone fish is inside of the function yay!');
     }, function failure(response) {
       console.log('Error retrieving Goal Entries from database!');
     });
@@ -8258,11 +8257,6 @@ function GoalController($http, $state, $stateParams, GoalsService, $scope) {
       cost: vm.newGoalCost
     };
 
-    // this function can be used to clear the shows form
-    // function resetForm (){
-    //   vm.newGoal = '';
-    // }
-
     // Make an ajax call to save the new Goal to the databse:
     GoalsService.addNewGoal(listIdForGoal, newGoal).then(function success(response) {
       // only push to the goalEntries array if the ajax call is successful
@@ -8271,25 +8265,12 @@ function GoalController($http, $state, $stateParams, GoalsService, $scope) {
 
       //after a new Goal is added re-populate the page
       getAllGoalByListId();
+      resetForm();
     }, function failure(response) {
       // if the http call is not successful, log the error
       //DO NOT clear the form
       // DO NOT push the new object to the 
-
       console.log('Error saving new Goal to database!');
-    });
-  };
-
-  vm.deleteGoal = function (goalIndexToDelete, goalIdToDeleteFromDatabase) {
-
-    GoalsService.deleteIdFromDatabase(goalIdToDeleteFromDatabase).then(function success(response) {
-      // only delete the Goal from the Angular array if 
-      // it was successfully deleted from the database
-      vm.goalEntries.splice(goalIndexToDelete, 1);
-    }, function failure(response) {
-      // DO NOT delete the Goal from the Angular array if the
-      // goal is not successfully deleted from the database
-      console.log('Error deleting Goal with ID of ' + goalIdToDeleteFromDatabase);
     });
   };
 
@@ -8299,10 +8280,30 @@ function GoalController($http, $state, $stateParams, GoalsService, $scope) {
       listId: listIdForGoal,
       goalId: goalId
     });
+    console.log('this is listId ' + listId);
+    console.log('this is goalId ' + goalId);
+  };
+
+  //   vm.showGoal = function (goalId) {
+  //     $state.go('showGoal', { goalId: goalId });
+  // }
+
+  // delete the goal
+  vm.deleteGoal = function (goalIdToDeleteFromDatabase) {
+    var listIdToDeleteFormDatabase = $stateParams.listId;
+    console.log('this is goalIdToDeleteFromDatabase ' + goalIdToDeleteFromDatabase);
+    GoalsService.deleteGoalFromDatabase(listIdToDeleteFormDatabase, goalIdToDeleteFromDatabase).then(function success(response) {
+      getAllGoalByListId();
+      console.log('goal deleted from database!');
+    }, function failure(response) {
+      console.log('this is a failure');
+      console.log(listIdToDeleteFormDatabase);
+      console.log('this is goalIdToDeleteFromDatabase' + goalIdToDeleteFromDatabase);
+    });
   };
 
   vm.showGoal = function (goalId) {
-    $state.go('/lists/:listId/goal/:goalId', { goalId: goalId });
+    $state.go('showGoal', { goalId: goalId });
   };
 
   // this function can be used to clear the goals form
@@ -8310,6 +8311,15 @@ function GoalController($http, $state, $stateParams, GoalsService, $scope) {
     vm.newGoalEntry = '';
     vm.newGoalCost = '';
   }
+
+  vm.totalGoals = function () {
+    if (vm.goalEntries) {
+      var totalGoals = vm.goalEntries.goal.reduce(function (totalGoals, goalEntry) {
+        return totalGoals + goalEntry.cost;
+      }, 0);
+      return totalGoals;
+    }
+  };
 }
 
 module.exports = GoalController;
@@ -8387,12 +8397,20 @@ ShowGoalController.$inject = ['$state', '$stateParams', 'GoalsService'];
 function ShowGoalController($state, $stateParams, GoalsService) {
 
   var vm = this;
+  // let goalIdToShow = $stateParams.goalId;
 
   function initialize() {
     var goalIdToShow = $stateParams.goalId;
+    var listIdForGoal = $stateParams.listId;
+    console.log('goalIdToShow  ' + goalIdToShow);
+    console.log('listIdForGoal ' + listIdForGoal);
+    // getSingleGoalById();
 
-    GoalsService.getSingleGoalById(goalIdToShow).then(function success(response) {
+
+    GoalsService.getSingleGoalById(listIdForGoal, goalIdToShow).then(function success(response) {
       vm.goalEntry = response.data;
+      console.log('>+++++<>>');
+      console.log(response.data);
     }, function failure(response) {
       console.log('Failed to retrieve information for Credit with ID of ' + goalIdToShow);
     });
@@ -8403,6 +8421,20 @@ function ShowGoalController($state, $stateParams, GoalsService) {
     $state.go('edit_goal/:goalId', { goalId: goalEntryId });
   };
 }
+
+// function getAllStudyGuidesByUserId() {
+//   StudyGuidesService.getAllStudyGuidesByUserId(userIdForStudyGuide)
+//       .then(
+//       function success(response) {
+//           // if the call is successful, return the list of study guides
+//           vm.studyGuideList = response.data;
+//           // console.log('this is the studyGuideList' + studyGuideList)
+//       },
+//       function failure(response) {
+//           console.log('Error retrieving User Entries from database!');
+//       });
+// }
+
 
 module.exports = ShowGoalController;
 
@@ -8434,6 +8466,22 @@ function ShowListController($state, $stateParams, ListsService) {
   }
 
   initialize();
+
+  // delete list
+  vm.deleteList = function (listIdToDeleteFromDatabase) {
+    var listIdToDeleteFormDatabase = $stateParams.listId;
+    console.log('delete list was called');
+    ListsService.deleteIdFromDatabase(listIdToDeleteFromDatabase).then(function success(response) {
+      var listIndexToDelete = vm.listEntries.indexOf(listIdToDeleteFromDatabase);
+      // only delete the List from the Angular array 
+      // if it was successfully deleted from the database
+      vm.listEntries.splice(listIndexToDelete, 1);
+    }, function failure(response) {
+      //Do Not delete the list from the Angular array 
+      //if the list is not successfully deleted form the database
+      console.log('Error deleting List with ID of ' + listIdToDeleteFromDatabase);
+    });
+  };
 
   // update shoppingList
 
@@ -46171,7 +46219,7 @@ angular.module('myResolutionApp').component('goal', GoalComponent);
 /* 88 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <form ng-submit=\"$ctrl.addNewGoal()\">\n                  <div>Entry: <input type=\"text\" ng-model=\"$ctrl.newGoalEntry\" required></div>\n                    <div>Cost: (USD)<input type=\"number\" step=\".01\" ng-model=\"$ctrl.newGoalCost\" required></div>\n                    <div><input class=\"btn\" type=\"submit\" value=\"Add to Goals\"></div>\n                </form>\n    \n            </div>\n        </div>\n\n        <div class=\"card\">\n          <div class=\"card-content\">\n            <h3>Total Goals</h3>\n            <h3><i>{{ $ctrl.totalGoals() | currency}}</i></h3>\n          </div>\n        </div>\n\n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <table>\n                    <tr>\n                        <th>Goals</th>\n                        <th>Cost</th>\n                        <th>Date Entered</th>\n                        <th></th>\n                    </tr>\n                    <tr class=\"row\" ng-repeat=\"goalEntry in $ctrl.goalEntries.goal\">\n                        <td>{{ goalEntry.entry }}</td>\n                        <td>{{ goalEntry.cost | currency }}</td>\n                        <td>{{ goalEntry.createAt | date : 'medium'  }}</td>\n                        <td><button class=\"btn\" ng-click=\"$ctrl.showGoal(goalEntry._id)\">View</button></td>\n                        <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n                        <!-- and also what the id of the credit is so we can delete it from the database -->\n                        <td><button class=\"btn\" ng-click=\"$ctrl.deleteGoal($index, goalEntry._id)\">Delete</button></td>\n                    </tr>\n                </table>\n    \n            </div>\n        </div>\n</div>";
+module.exports = "<div class=\"container\">\n    \n        <h1>Goals</h1>\n    \n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <form ng-submit=\"$ctrl.addNewGoal()\">\n                  <div>Entry: <input type=\"text\" ng-model=\"$ctrl.newGoalEntry\" required></div>\n                    <div>Cost: (USD)<input type=\"number\" step=\".01\" ng-model=\"$ctrl.newGoalCost\" required></div>\n                    <div><input class=\"btn\" type=\"submit\" value=\"Add to Goals\"></div>\n                </form>\n    \n            </div>\n        </div>\n\n        <div class=\"card\">\n          <div class=\"card-content\">\n            <h3>Total Goals</h3>\n            <h3><i>{{ $ctrl.totalGoals() | currency}}</i></h3>\n          </div>\n        </div>\n\n        <div class=\"card\">\n            <div class=\"card-content\">\n    \n                <table>\n                    <tr>\n                        <th>Goals</th>\n                        <th>Cost</th>\n                        <th>Date Entered</th>\n                        <th></th>\n                    </tr>\n                    <tr class=\"row\" ng-repeat=\"goalEntry in $ctrl.goalEntries.goal\">\n                        <td>{{goalEntry.entry}}</td>\n                        <td>{{goalEntry.cost | currency}}</td>\n                        <!-- <td>{{goalEntry.createAt | date : 'medium'}}</td> -->\n                        <!-- <td><button class=\"btn\" ui-sref=\"showGoal({listId: $ctrl.listId, goalId: goalEntry._id})\">View</button></td> -->\n                        \n                        <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n                        <!-- and also what the id of the credit is so we can delete it from the database -->\n                        <td><button class=\"btn\" ng-click=\"$ctrl.deleteGoal(goal._id)\">Delete</button></td>\n                    </tr>\n                </table>\n    \n            </div>\n        </div>\n</div>";
 
 /***/ }),
 /* 89 */
@@ -46240,7 +46288,7 @@ angular.module('myResolutionApp').component('showList', ShowListComponent);
 /* 94 */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>SHOW SHOPPING LIST</h1>\n<div class=\"container\">\n  \n  <button ng-click=\"$ctrl.showGoal($ctrl.listEntry._id)\">blue</button>\n  \n  \n</div>";
+module.exports = "<h1>SHOW SHOPPING LIST</h1>\n<div class=\"container\">\n  \n  <button ng-click=\"$ctrl.showGoal($ctrl.listEntry._id)\">blue</button>\n  <button ng-click=\"$ctrl.deleteList($ctrl.listEntry._id)\">Delete</button>\n  \n</div>";
 
 /***/ }),
 /* 95 */
@@ -46268,17 +46316,17 @@ function GoalsService($http) {
   //   return $http.get('/goals');
   // }
 
-  self.getSingleGoalById = function (goalIdToShow) {
-    return $http.get('lists/' + listIdForGoal + 'goal/');
+  self.getSingleGoalById = function (listIdForGoal, goalIdToShow) {
+    return $http.get('/lists/' + listIdForGoal + '/goal/' + goalIdToShow);
   };
 
   // self.addNewGoalToDatabase = function (newGoal) {
   //   return $http.post('goals/', newGoal);
   // }
 
-  // self.deleteIdFromDatabase = function (goalIdToDeleteFromDatabase) {
-  //   return $http.delete('goals/' + goalIdToDeleteFromDatabase);
-  // }
+  self.deleteGoalFromDatabase = function (listIdToDeleteFromDatabase, goalIdToDeleteFromDatabase) {
+    return $http.delete('/lists/' + listIdToDeleteFromDatabase + '/goal/' + goalIdToDeleteFromDatabase);
+  };
 
   // self.updateSingleGoal = function (goalToUpdate) {
   //   return $http.patch('goals/', goalToUpdate);

@@ -26,10 +26,8 @@ function GoalController($http, $state, $stateParams, GoalsService, $scope) {
       function success(response) {
         // if the call is successful, return the list of goals
         vm.goalEntries = response.data;
-        console.log('>+++++++<> This bone fish is inside of the function yay!')
         
       },
-
       function failure(response) {
         console.log('Error retrieving Goal Entries from database!');
       }
@@ -44,10 +42,6 @@ function GoalController($http, $state, $stateParams, GoalsService, $scope) {
       cost: vm.newGoalCost
     };
 
-    // this function can be used to clear the shows form
-    // function resetForm (){
-    //   vm.newGoal = '';
-    // }
 
     // Make an ajax call to save the new Goal to the databse:
     GoalsService.addNewGoal(listIdForGoal, newGoal)
@@ -56,49 +50,56 @@ function GoalController($http, $state, $stateParams, GoalsService, $scope) {
           // only push to the goalEntries array if the ajax call is successful
           const newGoal = response.data;
           // vm.goalEntries.push(newGoal);
-         
+          
           //after a new Goal is added re-populate the page
           getAllGoalByListId()
+          resetForm();
 
         },
         function failure(response) {
           // if the http call is not successful, log the error
           //DO NOT clear the form
           // DO NOT push the new object to the 
-          
           console.log('Error saving new Goal to database!');
-        }
-      )
-  }
+        });
+    }
+    
+    // function that opens the goal
+    vm.openGoal = function (goalId) {
+      $state.go('showGoal', 
+      {
+        listId: listIdForGoal,
+        goalId: goalId
+      });
+      console.log('this is listId ' + listId);
+      console.log('this is goalId ' + goalId);
+    }
 
-  vm.deleteGoal = function (goalIndexToDelete, goalIdToDeleteFromDatabase) {
-
-    GoalsService.deleteIdFromDatabase(goalIdToDeleteFromDatabase)
+  //   vm.showGoal = function (goalId) {
+  //     $state.go('showGoal', { goalId: goalId });
+  // }
+    
+  // delete the goal
+  vm.deleteGoal = function (goalIdToDeleteFromDatabase) {
+    let listIdToDeleteFormDatabase = $stateParams.listId;
+    console.log('this is goalIdToDeleteFromDatabase ' + goalIdToDeleteFromDatabase);
+    GoalsService.deleteGoalFromDatabase(listIdToDeleteFormDatabase, goalIdToDeleteFromDatabase)
       .then(
         function success(response) {
-          // only delete the Goal from the Angular array if 
-          // it was successfully deleted from the database
-          vm.goalEntries.splice(goalIndexToDelete, 1);
+          getAllGoalByListId();
+          console.log('goal deleted from database!')
         },
         function failure(response) {
-          // DO NOT delete the Goal from the Angular array if the
-          // goal is not successfully deleted from the database
-          console.log('Error deleting Goal with ID of ' + goalIdToDeleteFromDatabase);
+         console.log('this is a failure')
+         console.log(listIdToDeleteFormDatabase)
+         console.log('this is goalIdToDeleteFromDatabase' + goalIdToDeleteFromDatabase)
         }
       )
   }
 
-  // function that opens the goal
-  vm.openGoal = function (goalId) {
-    $state.go('showGoal', 
-    {
-      listId: listIdForGoal,
-      goalId: goalId
-    });
-  }
 
   vm.showGoal = function (goalId) {
-    $state.go('/lists/:listId/goal/:goalId', {goalId: goalId});
+    $state.go('showGoal', {goalId: goalId});
   }
 
   // this function can be used to clear the goals form
@@ -106,6 +107,17 @@ function GoalController($http, $state, $stateParams, GoalsService, $scope) {
     vm.newGoalEntry = '';
     vm.newGoalCost = '';
   }
+
+  vm.totalGoals = function () {
+    if (vm.goalEntries) {
+      let totalGoals = vm.goalEntries.goal.reduce(function (totalGoals, goalEntry) {
+        return totalGoals + goalEntry.cost;
+      }, 0)
+      return totalGoals;
+    }
+  }
+
+  
 
 }
 

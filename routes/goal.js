@@ -5,9 +5,28 @@ var router = express.Router({ mergeParams: true })
 var Goal = require('../models/goal');
 var List = require('../models/list');
 
+
+//show route
+router.get('/:goalId', function (request, response) {
+  
+  const goalIdToShow = request.params.goalId;
+  const listIdToShow = request.params.listId;
+  
+  Goal.findById(goalIdToShow, function (error, foundGoal) {
+    if (error) {
+      console.log('Error finding Credit with ID of ' + goalIdToShow);
+      return;
+    }
+    
+    response.send(foundGoal);
+  });
+  
+});
+
+
 // create route
 router.post('/', (request, response) => {
-
+  
   // grab the shoppingList ID we want to create a new goal for
   var listId = request.params.listId;
   var goalId = request.params.goalId;
@@ -48,6 +67,32 @@ router.post('/', (request, response) => {
     });
 });
 
+// goal delete route
+router.delete('/:goalId', (request, response) => {
+  var listId = request.params.listId;
+  var goalId = request.params.goalId;
+
+  List.findById(listId)
+    .exec(function (error, list){
+      
+      var indexOfGoal = '';
+
+      var goalResult = list && list.goal.find(function (gi, idx){
+        indexOfGoal = idx;
+        return gi._id == goalId;
+      });
+      list.goal.splice(indexOfGoal, 1);
+      list.save(function (error){
+        if (error) {
+          console.log(error);
+          return;
+        }
+        response.send('successfully deleted');
+      })
+    })
+})
+    
+ 
 
 
 

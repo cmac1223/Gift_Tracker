@@ -26,6 +26,26 @@ function ShowListController($state, $stateParams, ListsService){
 
   initialize();
 
+  // delete list
+  vm.deleteList = function (listIdToDeleteFromDatabase) {
+    let listIdToDeleteFormDatabase = $stateParams.listId;
+    console.log('delete list was called')
+    ListsService.deleteIdFromDatabase(listIdToDeleteFromDatabase)
+      .then(
+        function success(response){
+          var listIndexToDelete = vm.listEntries.indexOf(listIdToDeleteFromDatabase);
+          // only delete the List from the Angular array 
+          // if it was successfully deleted from the database
+          vm.listEntries.splice(listIndexToDelete, 1);
+        },
+        function failure(response) {
+          //Do Not delete the list from the Angular array 
+          //if the list is not successfully deleted form the database
+          console.log('Error deleting List with ID of ' + listIdToDeleteFromDatabase);
+        }
+      )
+  }
+
   // update shoppingList
   
   // this is the function that runs when you click on the show shopping list button

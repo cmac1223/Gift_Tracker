@@ -32,13 +32,14 @@
                         <th></th>
                     </tr>
                     <tr class="row" ng-repeat="goalEntry in $ctrl.goalEntries.goal">
-                        <td>{{ goalEntry.entry }}</td>
-                        <td>{{ goalEntry.cost | currency }}</td>
-                        <td>{{ goalEntry.createAt | date : 'medium'  }}</td>
-                        <td><button class="btn" ng-click="$ctrl.showGoal(goalEntry._id)">View</button></td>
+                        <td>{{goalEntry.entry}}</td>
+                        <td>{{goalEntry.cost | currency}}</td>
+                        <!-- <td>{{goalEntry.createAt | date : 'medium'}}</td> -->
+                        <!-- <td><button class="btn" ui-sref="showGoal({listId: $ctrl.listId, goalId: goalEntry._id})">View</button></td> -->
+                        
                         <!-- when the delete button is clicked, tell Angular what index in the array to delete -->
                         <!-- and also what the id of the credit is so we can delete it from the database -->
-                        <td><button class="btn" ng-click="$ctrl.deleteGoal($index, goalEntry._id)">Delete</button></td>
+                        <td><button class="btn" ng-click="$ctrl.deleteGoal(goal._id)">Delete</button></td>
                     </tr>
                 </table>
     

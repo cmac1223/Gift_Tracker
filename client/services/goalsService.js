@@ -18,17 +18,18 @@ function GoalsService($http) {
   //   return $http.get('/goals');
   // }
 
-  self.getSingleGoalById = function (goalIdToShow) {
-    return $http.get('lists/' + listIdForGoal + 'goal/');
+  self.getSingleGoalById = function (listIdForGoal, goalIdToShow) {
+    return $http.get('/lists/' + listIdForGoal + '/goal/' + goalIdToShow);
   }
 
   // self.addNewGoalToDatabase = function (newGoal) {
   //   return $http.post('goals/', newGoal);
   // }
 
-  // self.deleteIdFromDatabase = function (goalIdToDeleteFromDatabase) {
-  //   return $http.delete('goals/' + goalIdToDeleteFromDatabase);
-  // }
+  self.deleteGoalFromDatabase = function (listIdToDeleteFromDatabase, goalIdToDeleteFromDatabase) {
+    return $http.delete('/lists/' + listIdToDeleteFromDatabase +  '/goal/' + goalIdToDeleteFromDatabase);
+  }
+  
 
   // self.updateSingleGoal = function (goalToUpdate) {
   //   return $http.patch('goals/', goalToUpdate);
