@@ -45,6 +45,9 @@ nav {
   /* background: rgba(153,101,21, .2); */
   background: rgba(255,250,250,.25);
   z-index: -1;
-  
-  
+}
+
+h1 {
+  color: rgb(139,0,0);
+
 }
