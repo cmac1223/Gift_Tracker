@@ -1,4 +1,4 @@
-GoalController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$scope'];
+GoalController.$inject = ['$http', '$state', '$stateParams', 'GoalsService', '$scope', ];
 
 function GoalController($http, $state, $stateParams, GoalsService, $scope) {
   let vm = this;

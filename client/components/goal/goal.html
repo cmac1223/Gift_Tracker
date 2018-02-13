@@ -1,9 +1,9 @@
 <div class="container">
     
-        <h1>Goals</h1>
+        <h1>SHOPPING LIST</h1>
     
-        <div class="card">
-            <div class="card-content">
+        <div class="row">
+            <div class="card-content z-depth-4">
     
                 <form ng-submit="$ctrl.addNewGoal()">
                   <div>Entry: <input type="text" ng-model="$ctrl.newGoalEntry" required></div>
@@ -14,15 +14,15 @@
             </div>
         </div>
 
-        <div class="card">
-          <div class="card-content">
+        <div class="row">
+          <div class="card-content z-depth-4">
             <h3>Total Goals</h3>
             <h3><i>{{ $ctrl.totalGoals() | currency}}</i></h3>
           </div>
         </div>
 
-        <div class="card">
-            <div class="card-content">
+        <div class="row">
+            <div class="card-content z-depth-4">
     
                 <table>
                     <tr>
