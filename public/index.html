@@ -1,21 +1,47 @@
 <html lang="en" ng-app="myResolutionApp">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Gift Tracker</title>
   <script src="js/app.bundle.js"></script>
-  
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+  <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
-<body> 
-  {{2 + 2}}
-  <nav class="center-align">
-    <a class="btn" ui-sref="lists">LISTS</a>
+
+<body>
+
+
+
+  <nav>
+    <div class="nav-wrapper">
+      <!-- <a class="btn" >LISTS</a> -->
+      <div class="nav-text">
+        <a ui-sref="lists" class="brand-logo">HOME</a>
+
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li>
+            <a href="sass.html">Sass</a>
+          </li>
+          <li>
+            <a href="badges.html">Components</a>
+          </li>
+          <li>
+            <a href="collapsible.html">JavaScript</a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </nav>
-  
-  <ui-view></ui-view>  
-  
+
+  <div class="paintingContainer">
+    <img src="/images/gtpic .jpeg" alt="">
+  </div>
+
+  <ui-view></ui-view>
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script> -->
 </body>
+
 </html>

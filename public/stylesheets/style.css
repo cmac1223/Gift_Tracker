@@ -1,5 +1,5 @@
 body {
-  padding: 50px;
+  background-color: #4a7519;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -13,4 +13,30 @@ a {
 
 #show-sLists-card a:hover {
   color: rgba(150,255,200,.7)
+}
+
+.paintingContainer img {
+  height: 100vh;
+  width: 100vw;
+  top: 65px;
+  position: fixed;
+}
+
+nav {
+  width: 100vw;
+  height: 56px;
+  line-height: 56px;
+  margin: 0;
+  background-color: #d63840;
+  color: #61b46a;
+  z-index: -5; /* hide shadow behind image */
+}
+
+.nav-text {
+  color: #61b46a;
+}
+
+.card-content {
+  background-color: rgba(74, 118, 25, 0.43);
+  z-index: -1;
 }
