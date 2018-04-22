@@ -4,4 +4,4 @@ https://giftracker.herokuapp.com/#!/lists
 
 
 HOME PAGE
-[Imgur](https://i.imgur.com/eOxpKNk.jpg)
+![Imgur](https://i.imgur.com/eOxpKNk.jpg)
