@@ -11,3 +11,6 @@ CREATE LIST MENU
 
 SELECT NAME 
 ![Imgur](https://i.imgur.com/NG3BYgk.png)
+
+SHOW LIST 
+![Imgur](https://i.imgur.com/aLTVht2.jpg)
